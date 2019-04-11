@@ -32,7 +32,10 @@ int get_Page(uint32_t addr)
     return 1;
 }
 
-void init_Memory()
+void setB(uint32_t addr, uint8_t val)
 {
-
+    uint32_t first_id = GET_FPN(addr);
+    uint32_t second_id = GET_SPN(addr);
+    uint32_t offset = GET_OFF(addr);
+    memory[first_id][second_id][offset] = val;
 }

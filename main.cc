@@ -11,16 +11,17 @@ char* filename;
 bool single_step = false;
 bool print_elf = false;
 bool Parser(int argc, char** argv);
-
+Simulator* simulator;
+ELFIO::elfio* elf_reader;
 int main(int argc, char** argv)
 {
     if (!Parser(argc, argv)) 
         return -1;
 
-    read_ELF(filename);
-
-    
-
+    read_ELF(filename, elf_reader);
+    simulator = new Simulator();
+    simulator->PC = elf_reader->get_entry();
+    simulator->Run();
 
     return 0;
 }
