@@ -100,22 +100,36 @@
 #define LWU 38
 #define LD 39
 #define SD 40
-#define SLLI 41
-#define SRLI 42
-#define SRAI 43
-#define ADDIW 44
-#define SLLIW 45
-#define SRLIW 46
-#define SRAIW 47
-#define ADDW 48
-#define SUBW 49
-#define SLLW 50
-#define SRLW 51
-#define SRAW 52
-#define UNK 53
+#define ADDIW 41
+#define SLLIW 42
+#define SRLIW 43
+#define SRAIW 44
+#define ADDW 45
+#define SUBW 46
+#define SLLW 47
+#define SRLW 48
+#define SRAW 49
+#define MUL 50
+#define MULH 51
+#define DIV 52
+#define REM 53
+#define UNK 54
 
+bool Branch(int inst) 
+{
+    if (inst == BEQ || inst == BNE || inst == BLT || inst == BGE)
+        return true;
+    else return false;
+}
 
-uint8_t** memory[1024]; //virtual memory of the simulator(first level pt entry)
+bool ReadMem(int inst)
+{
+    if (inst == LB || inst == LH || inst == LW || inst == LD)
+        return true;
+    else return false;
+}
+
+char** memory[1024]; //virtual memory of the simulator(first level pt entry)
 
 
 

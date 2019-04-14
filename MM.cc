@@ -1,9 +1,9 @@
 #include "machine.h"
 #include "MM.h"
 
-extern uint8_t** memory[1024];
+extern char** memory[1024];
 
-bool check_Page(uint32_t addr)
+bool check_Page(uint64_t addr)
 {
     uint32_t first_id = GET_FPN(addr);
     uint32_t second_id = GET_SPN(addr);
@@ -13,7 +13,7 @@ bool check_Page(uint32_t addr)
     return false;
 }
 
-int get_Page(uint32_t addr)
+int get_Page(uint64_t addr)
 {
     uint32_t first_id = GET_FPN(addr);
     uint32_t second_id = GET_SPN(addr);
@@ -22,20 +22,28 @@ int get_Page(uint32_t addr)
         return 0;
     }
     if (!memory[first_id]) {
-        memory[first_id] = new uint8_t* [1024];
+        memory[first_id] = new char* [1024];
         memset(memory[first_id], 0, 1024);
     }
     if (!memory[first_id][second_id]) {
-        memory[first_id][second_id] = new uint8_t[4 * 1024];
+        memory[first_id][second_id] = new char[4 * 1024];
         memset(memory[first_id][second_id], 0, 4 * 1024);
     }
     return 1;
 }
 
-void setB(uint32_t addr, uint8_t val)
+void setB(uint64_t addr, uint8_t val)
 {
     uint32_t first_id = GET_FPN(addr);
     uint32_t second_id = GET_SPN(addr);
     uint32_t offset = GET_OFF(addr);
     memory[first_id][second_id][offset] = val;
+}
+
+char getB(uint64_t addr)
+{
+    uint32_t first_id = GET_FPN(addr);
+    uint32_t second_id = GET_SPN(addr);
+    uint32_t offset = GET_OFF(addr);
+    return memory[first_id][second_id][offset];
 }

@@ -6,56 +6,63 @@
 
 class Simulator {
    public:
-    uint64_t reg[REG_NUM];
-    uint64_t PC;
-
+    unsigned long long reg[REG_NUM];
+    unsigned long long PC;
+    bool executeWB;
+    bool memoryWB;
+    int stall;
+    int strategy;
     Simulator();
-    ~Simulaor();
+    ~Simulator();
 
     void Run();
+    bool predictBranch();
 
    private:
-    void fetch();
-    void decode();
-    void execute();
-    void memory();
-    void writeBack();
-
-    // four pipeline registers
-   	struct Fetch_to_Decode
+     // four pipeline registers
+    struct Fetch_to_Decode
     {
-   		bool bubble;
-   		bool stall;
-   		unsigned int instruction;
-      int PC;
-   	} fdReg, fdRegNew;
+      bool bubble;
+      unsigned instruction;
+      unsigned long long PC;
+    } fdReg, fdRegNew;
 
     struct Decode_to_Execute
     {
       bool bubble;
-      bool stall;
-      int PC;
-      int rs, rt, rd;
+      int op_type;
+      int offset;
+      bool takeBranch;
+      unsigned long long PC;
+      unsigned long long PC_taken;
+      unsigned long long PC_not_taken;
+      int imm;
+      unsigned rs1, rs2, rd;
+      int64_t op1, op2;
     } deReg, deRegNew;
 
     struct Execute_to_Memory
     {
       bool bubble;
-      bool stall;
-      int op1, op2, out;
+      int64_t op1, op2, out;
       bool wReg, wMem, rMem; // read or write signals
       bool signExt; // if need to use sign extension
-      int rd;
+      unsigned rd;
     } emReg, emRegNew;
 
     struct Memory_to_WB
     {
       bool bubble;
-      bool stall;
       int out;
       bool wReg;
-      int dest;
+      unsigned rd;
     } mwReg, mwRegNew;
+
+    void fetch();
+    void decode();
+    void execute();
+    void memory();
+    void writeBack();
 
         
 };

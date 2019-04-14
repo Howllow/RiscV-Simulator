@@ -8,7 +8,7 @@
 
 using namespace ELFIO;
 
-extern uint8_t** memory[1024];
+extern char** memory[1024];
 
 bool read_ELF(char* filename, elfio* elf_reader)
 {

@@ -3,6 +3,6 @@
 
 #include <elfio/elfio.hpp>
 
-bool read_ELF(char* filename);
+bool read_ELF(char* filename, ELFIO::elfio* elf_reader);
 
 #endif
