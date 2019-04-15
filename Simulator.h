@@ -37,7 +37,8 @@ class Simulator {
       unsigned long long PC_taken;
       unsigned long long PC_not_taken;
       int imm;
-      unsigned rs1, rs2, rd;
+      unsigned rs1, rs2;
+      int rd;
       int64_t op1, op2;
     } deReg, deRegNew;
 
@@ -45,9 +46,9 @@ class Simulator {
     {
       bool bubble;
       int64_t op1, op2, out;
-      bool wReg, wMem, rMem; // read or write signals
+      bool wMem, rMem; // read or write signals
       bool signExt; // if need to use sign extension
-      unsigned rd;
+      int rd;
     } emReg, emRegNew;
 
     struct Memory_to_WB

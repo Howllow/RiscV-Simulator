@@ -129,8 +129,10 @@ Simulator::decode()
 		if (funct3 == 0x0)
 			type = ADDI;
 		else if (funct3 == 0x1) {
-			if (funct7 == 0x00)
+			if (funct7 == 0x00) {
 				type = SLLI;
+				deRegNew.op2 = deRegNew.op2 & 0x3F;
+			}
 		}
 		else if (funct3 == 0x2)
 			type = SLTI;
@@ -139,10 +141,14 @@ Simulator::decode()
 		else if (funct3 == 0x4)
 			type = XORI;
 		else if (funct3 == 0x5) {
-			if (funct7 == 0x00)
+			if (funct7 == 0x00) {
 				type = SRLI;
-			else if (funct7 == 0x10)
+				deRegNew.op2 = deRegNew.op2 & 0x3F;
+			}
+			else if (funct7 == 0x10) {
 				type = SRAI;
+				deRegNew.op2 = deRegNew.op2 & 0x3F;
+			}
 		}
 		else if (funct3 == 0x6)
 			type = ORI;
@@ -228,12 +234,12 @@ Simulator::decode()
 			if (predictBranch) {
 				fdReg.bubble = true; // in order to get the correct PC 
 				deRegNew.takeBranch = true;
-				PC_taken = fdReg.PC + offset;
-				PC_not_taken = fdReg.PC + 4;
+				deRegNew.PC_taken = fdReg.PC + offset;
+				deRegNew.PC_not_taken = fdReg.PC + 4;
 			}
 			else {
-				PC_not_taken = fdReg.PC + offset;
-				PC_taken = fdReg.PC + 4;
+				deRegNew.PC_not_taken = fdReg.PC + offset;
+				deRegNew.PC_taken = fdReg.PC + 4;
 			}
 		}		
 	}
