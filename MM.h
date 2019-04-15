@@ -10,5 +10,6 @@ void init_Memory();
 bool check_Page(uint64_t addr);
 int get_Page(uint64_t addr);
 void setB(uint64_t addr, uint8_t val);
-char getB(uint64_t addr);
+void setGivenSize(uint64_t addr, uint8_t val, int size);
+uint8_t getB(uint64_t addr);
 #endif

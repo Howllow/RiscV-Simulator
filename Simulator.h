@@ -6,17 +6,26 @@
 
 class Simulator {
    public:
+    unsigned long long cycles;
+    unsigned long long insts;
+    unsigned long long goodPredict;
+    unsigned long long badPredict;
     unsigned long long reg[REG_NUM];
     unsigned long long PC;
-    bool executeWB;
-    bool memoryWB;
+    unsigned long long PC_taken;
+    unsigned long long PC_not_taken;
+    int exeWBdest;
+    int memWBdest;
     int stall;
     int strategy;
-    Simulator();
+    bool singlestep;
+    Simulator(bool singlestep, int strategy);
     ~Simulator();
 
     void Run();
     bool predictBranch();
+    void Print();
+    int64_t syscall(int64_t a7, int64_t a0) ;
 
    private:
      // four pipeline registers
@@ -34,8 +43,7 @@ class Simulator {
       int offset;
       bool takeBranch;
       unsigned long long PC;
-      unsigned long long PC_taken;
-      unsigned long long PC_not_taken;
+
       int imm;
       unsigned rs1, rs2;
       int rd;
@@ -46,17 +54,17 @@ class Simulator {
     {
       bool bubble;
       int64_t op1, op2, out;
-      bool wMem, rMem; // read or write signals
+      bool wReg, wMem, rMem; // read or write signals
       bool signExt; // if need to use sign extension
       int rd;
+      int memsize;
     } emReg, emRegNew;
 
     struct Memory_to_WB
     {
       bool bubble;
-      int out;
-      bool wReg;
-      unsigned rd;
+      int64_t out;
+      int rd;
     } mwReg, mwRegNew;
 
     void fetch();
@@ -67,9 +75,5 @@ class Simulator {
 
         
 };
-
-
-
-
 
 #endif

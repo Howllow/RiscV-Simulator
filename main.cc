@@ -1,15 +1,18 @@
 #include <elfio/elfio.hpp>
 #include <cstdio>
 #include <cmath>
+#include <string>
 
 #include "machine.h"
 #include "Read_Elf.h"
+#include "Simulator.h"
 #include "MM.h"
 
 
 char* filename;
 bool single_step = false;
 bool print_elf = false;
+int strategy = 0;
 bool Parser(int argc, char** argv);
 Simulator* simulator;
 ELFIO::elfio* elf_reader;
@@ -19,7 +22,7 @@ int main(int argc, char** argv)
         return -1;
 
     read_ELF(filename, elf_reader);
-    simulator = new Simulator();
+    simulator = new Simulator(single_step, strategy);
     simulator->PC = elf_reader->get_entry();
     simulator->Run();
 
@@ -42,6 +45,18 @@ bool Parser(int argc, char** argv)
                 case 's':
                 single_step = true;
                 break;
+                case 'q':
+                if (i + 1 < argc) {
+                    std::string branchstr = argv[i + 1];
+                    i++;
+                    if (branchstr == "Always")
+                        strategy = 0;
+                    else if (branchstr == "Never")
+                        strategy = 1;
+                    else
+                        return false;
+                    break;
+                }
                 default:
                 printf("Parameter Wrong!!\n");
                 return false;

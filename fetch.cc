@@ -13,6 +13,9 @@ void
 Simulator::fetch()
 {
 	fdRegNew.instruction = getInstruction(PC);
+	if (singlestep) {
+		printf("IF: fetch 0x%.8x at 0x%llx\n", fdRegNew.instruction, PC);
+	}
 	fdRegNew.bubble = false;
 	fdRegNew.PC = PC;
 	PC += 4;

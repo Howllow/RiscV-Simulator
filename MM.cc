@@ -40,10 +40,18 @@ void setB(uint64_t addr, uint8_t val)
     memory[first_id][second_id][offset] = val;
 }
 
-char getB(uint64_t addr)
+uint8_t getB(uint64_t addr)
 {
     uint32_t first_id = GET_FPN(addr);
     uint32_t second_id = GET_SPN(addr);
     uint32_t offset = GET_OFF(addr);
     return memory[first_id][second_id][offset];
+}
+
+void setGivenSize(uint64_t addr, uint8_t val, int size)
+{
+    uint32_t first_id = GET_FPN(addr);
+    uint32_t second_id = GET_SPN(addr);
+    uint32_t offset = GET_OFF(addr);
+    memcpy(&memory[first_id][second_id][offset], &val, size);
 }

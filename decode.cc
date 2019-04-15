@@ -29,8 +29,9 @@ MemRead(int type)
 void
 Simulator::decode()
 {
-	//stall and bubble
 	if (fdReg.bubble) {
+		if (singlestep)
+			printf("ID: Bubble\n");
 		deRegNew.bubble = true;
 		return;
 	}
@@ -234,12 +235,12 @@ Simulator::decode()
 			if (predictBranch) {
 				fdReg.bubble = true; // in order to get the correct PC 
 				deRegNew.takeBranch = true;
-				deRegNew.PC_taken = fdReg.PC + offset;
-				deRegNew.PC_not_taken = fdReg.PC + 4;
+				PC_taken = fdReg.PC + offset;
+				PC_not_taken = fdReg.PC + 4;
 			}
 			else {
-				deRegNew.PC_not_taken = fdReg.PC + offset;
-				deRegNew.PC_taken = fdReg.PC + 4;
+				PC_not_taken = fdReg.PC + offset;
+				PC_taken = fdReg.PC + 4;
 			}
 		}		
 	}
@@ -285,6 +286,9 @@ Simulator::decode()
 		type = JAL;
 	}
 
+	if (singlestep) {
+		printf("ID: decode 0x%.8x, type is %d\n", instruction, type);
+	}
 	deRegNew.PC = fdReg.PC;
 	deRegNew.op_type = type;
 	deRegNew.bubble = false;
