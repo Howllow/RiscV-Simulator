@@ -5,6 +5,9 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <cstdarg>
+#include <cmath>
+#include <elfio/elfio.hpp>
 
 #define REG_NUM 32
 #define Stack_Base 0x80000000
@@ -115,23 +118,6 @@
 #define DIV 52
 #define REM 53
 #define UNK 54
-
-bool Branch(int inst) 
-{
-    if (inst == BEQ || inst == BNE || inst == BLT || inst == BGE)
-        return true;
-    else return false;
-}
-
-bool ReadMem(int inst)
-{
-    if (inst == LB || inst == LH || inst == LW || inst == LD)
-        return true;
-    else return false;
-}
-
-char** memory[1024]; //virtual memory of the simulator(first level pt entry)
-
-
+extern unsigned char** mem[1024];
 
 #endif

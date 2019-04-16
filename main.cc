@@ -1,28 +1,23 @@
-#include <elfio/elfio.hpp>
-#include <cstdio>
-#include <cmath>
-#include <string>
-
-#include "machine.h"
-#include "Read_Elf.h"
 #include "Simulator.h"
-#include "MM.h"
 
 
-char* filename;
+char* filename = NULL;
 bool single_step = false;
-bool print_elf = false;
+bool printinfo = false;
 int strategy = 0;
 bool Parser(int argc, char** argv);
 Simulator* simulator;
 ELFIO::elfio* elf_reader;
+unsigned char** mem[1024]; //virtual memory of the simulator(first level pt entry)
 int main(int argc, char** argv)
 {
+    for (int i = 0; i < 1024; i++)
+        mem[i] = NULL;
     if (!Parser(argc, argv)) 
         return -1;
-
+    simulator = new Simulator(single_step, strategy, printinfo);
+    elf_reader = new ELFIO::elfio();
     read_ELF(filename, elf_reader);
-    simulator = new Simulator(single_step, strategy);
     simulator->PC = elf_reader->get_entry();
     simulator->Run();
 
@@ -34,13 +29,11 @@ int main(int argc, char** argv)
  */ 
 bool Parser(int argc, char** argv)
 {
-    filename = argv[0]; // load filename and use it for elfreader
-    int i = 1;
-    for (i; i < argc; i++) {
+    for (int i = 1; i < argc; i++) {
         if (argv[i][0] == '-') {
             switch (argv[i][1]){
                 case 'p':
-                print_elf = true;
+                printinfo = true;
                 break;
                 case 's':
                 single_step = true;
@@ -62,6 +55,8 @@ bool Parser(int argc, char** argv)
                 return false;
             }
         }
+        else if (filename == NULL)
+            filename = argv[i];
     }
     return true;
 }

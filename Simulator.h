@@ -1,8 +1,7 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
-#include "machine.h"
-
+#include "MM.h"
 
 class Simulator {
    public:
@@ -16,10 +15,11 @@ class Simulator {
     unsigned long long PC_not_taken;
     int exeWBdest;
     int memWBdest;
-    int stall;
+    bool stall;
     int strategy;
+    bool ifprint;
     bool singlestep;
-    Simulator(bool singlestep, int strategy);
+    Simulator(bool singlestep, int strategy, bool ifprint);
     ~Simulator();
 
     void Run();
@@ -40,12 +40,12 @@ class Simulator {
     {
       bool bubble;
       int op_type;
-      int offset;
+      long long offset;
       bool takeBranch;
       unsigned long long PC;
 
       int imm;
-      unsigned rs1, rs2;
+      int rs1, rs2;
       int rd;
       int64_t op1, op2;
     } deReg, deRegNew;

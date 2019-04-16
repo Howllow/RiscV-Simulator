@@ -1,0 +1,3 @@
+/Users/howllow/SharedWithUB/simulator/CMakeFiles/rebuild_cache.dir
+/Users/howllow/SharedWithUB/simulator/CMakeFiles/edit_cache.dir
+/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir

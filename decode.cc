@@ -1,6 +1,4 @@
 #include "Simulator.h"
-#include "MM.h"
-#include "machine.h"
 
 #define ALWAYS_TAKE 0
 #define NEVER_TAKE 1
@@ -15,6 +13,7 @@ Simulator::predictBranch()
 	else if (strategy == 1) {
 		return false;
 	}
+	return true;
 }
 
 bool
@@ -30,9 +29,14 @@ void
 Simulator::decode()
 {
 	if (fdReg.bubble) {
-		if (singlestep)
+		if (ifprint)
 			printf("ID: Bubble\n");
 		deRegNew.bubble = true;
+		deRegNew.takeBranch = false;
+		deRegNew.rs1 = -1;
+		deRegNew.rs2 = -1;
+		deRegNew.rd = -1;
+
 		return;
 	}
 
@@ -48,7 +52,7 @@ Simulator::decode()
 	deRegNew.rs1 = -1;
 	deRegNew.rs2 = -1;
 	deRegNew.rd = -1;
-	int offset;
+	long long offset;
 
 	//R-Type instruction
 	if (opcode == OP_R) {
@@ -130,10 +134,8 @@ Simulator::decode()
 		if (funct3 == 0x0)
 			type = ADDI;
 		else if (funct3 == 0x1) {
-			if (funct7 == 0x00) {
-				type = SLLI;
-				deRegNew.op2 = deRegNew.op2 & 0x3F;
-			}
+			type = SLLI;
+			deRegNew.op2 = deRegNew.op2 & 0x3F;
 		}
 		else if (funct3 == 0x2)
 			type = SLTI;
@@ -142,11 +144,11 @@ Simulator::decode()
 		else if (funct3 == 0x4)
 			type = XORI;
 		else if (funct3 == 0x5) {
-			if (funct7 == 0x00) {
+			if (((instruction >> 26) & 0x3F) == 0x00) {
 				type = SRLI;
 				deRegNew.op2 = deRegNew.op2 & 0x3F;
 			}
-			else if (funct7 == 0x10) {
+			else if (((instruction >> 26) & 0x3F) == 0x10) {
 				type = SRAI;
 				deRegNew.op2 = deRegNew.op2 & 0x3F;
 			}
@@ -161,6 +163,7 @@ Simulator::decode()
 		deRegNew.imm = int(instruction) >> 20;
 		deRegNew.rs1 = rs1;
 		deRegNew.op1 = reg[rs1];
+		deRegNew.op2 = deRegNew.imm;
 		deRegNew.rd = rd;
 		if (funct3 == 0x0)
 			type = ADDIW;
@@ -176,6 +179,8 @@ Simulator::decode()
 
 	else if (opcode == OP_JALR) {
 		deRegNew.imm = int(instruction) >> 20;
+		deRegNew.op1 = reg[rs1];
+		deRegNew.op2 = deRegNew.imm;
 		deRegNew.rs1 = rs1;
 		deRegNew.rd = rd;
 		if (funct3 == 0x0)
@@ -195,7 +200,7 @@ Simulator::decode()
 	}
 
 	else if (opcode == OP_STORE) {
-		deRegNew.offset = int(((instruction >> 7) & 0x1F) + ((instruction >> 20) & 0xFE0)) << 20 >> 20;
+		deRegNew.offset = int(((instruction >> 7) & 0x1F) | ((instruction >> 20) & 0xFE0)) << 20 >> 20;
 		deRegNew.rs2 = rs2;
 		deRegNew.rs1 = rs1;
 		deRegNew.op1 = reg[rs1];
@@ -211,8 +216,8 @@ Simulator::decode()
 	}
 
 	else if (opcode == OP_BRANCH) {
-		deRegNew.offset = int(((instruction >> 7) & 0x1E) + ((instruction >> 20) & 0x7E0) +
-                    ((instruction << 4) & 0x800) + ((instruction >> 19) & 0x1000)) << 19 >> 19;
+		deRegNew.offset = int(((instruction >> 7) & 0x1E) | ((instruction >> 20) & 0x7E0) |
+                    ((instruction << 4) & 0x800) | ((instruction >> 19) & 0x1000)) << 19 >> 19;
 		offset = deRegNew.offset;
 		deRegNew.rs1 = rs1;
 		deRegNew.rs2 = rs2;
@@ -232,16 +237,25 @@ Simulator::decode()
 			type = BGEU;
 
 		if (type != UNK) {
-			if (predictBranch) {
-				fdReg.bubble = true; // in order to get the correct PC 
-				deRegNew.takeBranch = true;
+			if (predictBranch()) {
+				fdRegNew.bubble = true; // in order to get the correct PC 
+				takeBranch = true;
 				PC_taken = fdReg.PC + offset;
+				if (ifprint)
+					printf("predict PC 0x%.8llx\n", PC_taken);
 				PC_not_taken = fdReg.PC + 4;
 			}
 			else {
+				takeBranch = false;
 				PC_not_taken = fdReg.PC + offset;
 				PC_taken = fdReg.PC + 4;
+				if (ifprint)
+					printf("predict PC 0x%.8llx\n", PC_taken);
 			}
+		}
+		else {
+			printf("Unknown inst 0x%llx\n", instruction);
+			exit(-1);
 		}		
 	}
 
@@ -268,29 +282,30 @@ Simulator::decode()
 	}
 
 	else if (opcode == OP_LUI) {
-		deRegNew.offset = int(instruction) >> 20; 
+		deRegNew.offset = int(instruction) >> 12; 
 		deRegNew.rd = rd;
 		type = LUI;
 	}
 
 	else if (opcode == OP_AUI) {
-		deRegNew.offset = int(instruction) >> 20; 
+		deRegNew.offset = int(instruction) >> 12; 
 		deRegNew.rd = rd;
 		type = AUIPC;
 	}
 
 	else if (opcode == OP_JAL) {
-		deRegNew.imm = int(((instruction >> 1) & 0x7F800) + ((instruction >> 10) & 0x400) + 
-					((instruction >> 12) & 0x80000) + ((instruction >> 21) & 0x3FF)) << 12 >> 11;
+		deRegNew.imm = int(((instruction >> 1) & 0x7F800) | ((instruction >> 10) & 0x400) | 
+					((instruction >> 12) & 0x80000) | ((instruction >> 21) & 0x3FF)) << 12 >> 11;
 		deRegNew.rd = rd;
 		type = JAL;
 	}
 
-	if (singlestep) {
+	if (ifprint) {
 		printf("ID: decode 0x%.8x, type is %d\n", instruction, type);
 	}
 	deRegNew.PC = fdReg.PC;
 	deRegNew.op_type = type;
 	deRegNew.bubble = false;
+	deRegNew.takeBranch = takeBranch;
 
 }

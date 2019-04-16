@@ -1,28 +1,35 @@
-#include "machine.h"
 #include "Simulator.h"
+
 int64_t 
 Simulator::syscall(int64_t a7, int64_t a0) 
 {
-    int type = a7;
-    int arg = a0;
+    int64_t type = a7;
+    int64_t arg = a0;
     switch (type)
     {
         case 93:
         printf("Simulator Exiting!\n");
-        printf("Cycles: %u\n", cycles);
-        printf("Instructions: %u\n", insts);
-        printf("CPI: %.4f\n", ((float)insts) / cycles);
+        printf("-------------------------------------\n");
+        printf("-------------------------------------\n");
+        printf("Cycles: %llu\n", cycles);
+        printf("Instructions: %llu\n", insts);
+        printf("CPI: %.4f\n", ((float)cycles) / insts);
+        printf("Good Predict: %d\n", goodPredict);
+        printf("Bad Predict: %d\n", badPredict);
         printf("Predict Acc: %.4f\n", (float(goodPredict)) / (goodPredict + badPredict));
         exit(0);
+        default:
+            printf("Syscall %d Unknown!!\n", type);
+            exit(-1);
     }
-    return 0;
+    return arg;
 }
 
 void
 Simulator::execute() 
 {
     if (deReg.bubble) {
-        if (singlestep) {
+        if (ifprint) {
             printf("EX: Bubble\n");
         }
 		emRegNew.bubble = true;
@@ -38,19 +45,18 @@ Simulator::execute()
     bool isbranch = false;
     bool isjump = false;
     int op_type = deReg.op_type;
-    int op1 = deReg.op1;
-    int op2 = deReg.op2;
+    int64_t op1 = deReg.op1;
+    int64_t op2 = deReg.op2;
     int rs1 = deReg.rs1;
     int rs2 = deReg.rs2;
-    int out = 0;
+    int64_t out = 0;
     int rd = deReg.rd;
     int imm = deReg.imm;
-    int offset = deReg.offset;
+    long long offset = deReg.offset;
     unsigned long long updatePC = deReg.PC;
-    unsigned long long jumpPC = deReg.PC;
     unsigned long long branchPC = deReg.PC;
 
-    if (singlestep) {
+    if (ifprint) {
          printf("EX: Type is %d\n", op_type);
     }
     
@@ -61,7 +67,7 @@ Simulator::execute()
         break;
 
         case AUIPC:
-        out = deReg.PC + offset << 12;
+        out = deReg.PC + (offset << 12);
         break;
 
         case JAL:
@@ -70,12 +76,16 @@ Simulator::execute()
         //cancel the fetched two wrong instructions
         fdRegNew.bubble = true;
         deRegNew.bubble = true;
-        updatePC = PC;
         break;
 
         case ADD:
         case ADDI:
         out = op1 + op2;
+        break;
+
+        case ADDIW:
+        case ADDW:
+        out = (int64_t)((int)op1 + (int)op2);
         break;
 
         case SUB:
@@ -99,7 +109,7 @@ Simulator::execute()
 
         case SRLW:
         case SRLIW:
-        out = uint64_t((unsigned) op1 >> (unsigned) op2);
+        out = uint64_t(unsigned((unsigned) op1 >> (unsigned) op2));
         break;
 
         case SRA:
@@ -173,7 +183,6 @@ Simulator::execute()
         case LD:
         emRegNew.rMem = true;
         emRegNew.memsize = 8;
-        emRegNew.signExt = true;
         out = op1 + offset;
         break;
 
@@ -197,7 +206,7 @@ Simulator::execute()
 
         case JALR:
         out = deReg.PC + 4;
-        PC = (op1 + op2) & (~(uint64_t)1);
+        PC = (op1 + deReg.imm) & (~(uint64_t)1);
         //cancel the fetched two wrong instructions
         fdRegNew.bubble = true;
         deRegNew.bubble = true;
@@ -236,6 +245,7 @@ Simulator::execute()
         break;
 
         case BEQ:
+        isbranch = true;
         if (op1 == op2) {
             takebranch = true;
             branchPC += offset;
@@ -281,6 +291,10 @@ Simulator::execute()
             branchPC += offset;
         }
         break;
+
+        default:
+        printf("UNK!!\n");
+        exit(-1);
     }
 
     // data hazard caused by memread, stall the pipeline
@@ -294,24 +308,31 @@ Simulator::execute()
         if (deRegNew.rs1 == rd) {
             deRegNew.op1 = out;
             exeWBdest = rd;
+            if (ifprint)
+                printf("forwarding 0x%llx to reg:x%d\n", out, rd);
         }
         else if (deRegNew.rs2 == rd) {
             deRegNew.op2 = out;
             exeWBdest = rd;
+            if (ifprint)
+                printf("forwarding 0x%llx to reg:x%d\n", out, rd);
         }
     }
     
     // branch predict related
     if (isbranch) {
-        updatePC = branchPC;
         // predict correctly
-        if (takebranch == deReg.takeBranch) {
+        if (takebranch == deReg.takeBranch) { 
+            if (ifprint)
+				printf("predict right!\n");
             goodPredict++;
         }
         // predict incorrectly
         else {
             badPredict++;
             PC = PC_not_taken;
+            if (ifprint)
+					printf("predict wrong!\n");
             //cancel the fetched two wrong instructions
             fdRegNew.bubble = true;
             deRegNew.bubble = true;

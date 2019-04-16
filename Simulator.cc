@@ -1,18 +1,16 @@
 #include "Simulator.h"
-#include "machine.h"
-#include "MM.h"
 
-
-Simulator::Simulator(bool singlestep, int strategy) 
+Simulator::Simulator(bool singlestep, int strategy, bool ifprint) 
 {
 	PC = 0;
-	stall = 0;
+	stall = false;
 	cycles = 0;
 	insts = 0;
 	goodPredict = 0;
 	badPredict = 0;
-	singlestep = singlestep;
-	strategy = strategy;
+	this->singlestep = singlestep;
+	this->strategy = strategy;
+	this->ifprint = ifprint;
 
 	for (int i = 0; i < REG_NUM; i++) {
 		reg[i] = 0;
@@ -47,60 +45,62 @@ Simulator::Run()
 		execute();
 		memory();
 		writeBack();
-
+		reg[0] = 0;
+		cycles++;
 		deReg = deRegNew;
 		emReg = emRegNew;
 		mwReg = mwRegNew;
-
-		if (!stall) {
-			fdReg = fdRegNew;
-			cycles++;
-		}
-
-		else {
+		if (stall) {
 			PC -= 4;
-			stall = false;
+			if (fdReg.bubble)
+				fdReg.bubble =false;
 		}
-
-		if (!deReg.bubble) {
-			if (deReg.takeBranch)
-				PC = PC_taken;
+		else {
+			fdReg = fdRegNew;
+		}
+		if (deReg.takeBranch && !stall && !deReg.bubble){
+			PC = PC_taken;
 		}
 	
-		if (singlestep) {
+		if (ifprint) {
 			Print();
+		}
+		if (singlestep) {
 			printf("Press Enter to contunue!");
 			getchar();
 		}
+		
 	}
 }
 
 void
 Simulator::Print()
 {
+	/*
 	printf("----------------MEM-------------------\n");
 	for (int i = 0; i < 1024; ++i) {
-		if (::memory[i] == NULL) {
+		if (mem[i] == NULL) {
 			continue;
 		}
 		printf("First Level Page 0x%x-0x%x:\n", i << 22, (i + 1) << 22);
-		for (int j = 0; j < 1024; ++j) {
-			if (::memory[i][j] == NULL) {
-				continue;
+			for (int j = 0; j < 1024; ++j) {
+				if (mem[i][j] == NULL) {
+					continue;
+				}
+				printf("  Second Level Page 0x%x-0x%x\n", (i << 22) + (j << 12),
+						(i << 22) + ((j + 1) << 12));
 			}
-			printf("  Second Level Page 0x%x-0x%x\n", (i << 22) + (j << 12),
-					(i << 22) + ((j + 1) << 12));
-		}
     }
+		*/
 	printf("-------------------------------------\n");
 	printf("\n");
 	printf("----------------REG------------------\n");
 	for (int i = 0; i < 32; i++) {
-		printf("x%d: 0x%.8llx", i, reg[i]);
+		printf("x%d: 0x%.16llx", i, reg[i]);
 		if (i % 4 == 3)
 			printf("\n");
 		printf("\n");
-		printf("PC: 0x%llx\n", PC);
 	}
+	printf("PC: 0x%llx\n", PC);
 	printf("-------------------------------------\n");
 }
