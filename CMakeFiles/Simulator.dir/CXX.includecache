@@ -34,10 +34,6 @@ cmath
 elfio/elfio.hpp
 -
 
-/Users/howllow/SharedWithUB/simulator/memory.cc
-Simulator.h
-/Users/howllow/SharedWithUB/simulator/Simulator.h
-
 elfio/elf_types.hpp
 stdint.h
 -

@@ -7,6 +7,12 @@ Simulator::syscall(int64_t a7, int64_t a0)
     int64_t arg = a0;
     switch (type)
     {
+        case 0:
+        printf("%d", (int)arg);
+        break;
+        case 1:
+        printf("%c", char(arg));
+        break;
         case 93:
         printf("Simulator Exiting!\n");
         printf("-------------------------------------\n");
