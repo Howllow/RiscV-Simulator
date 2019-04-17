@@ -23,6 +23,7 @@ Simulator::syscall(int64_t a7, int64_t a0)
         printf("Good Predict: %d\n", goodPredict);
         printf("Bad Predict: %d\n", badPredict);
         printf("Predict Acc: %.4f\n", (float(goodPredict)) / (goodPredict + badPredict));
+        printf("Mem Load Hazards: %d\n", memLoadHazard);
         exit(0);
         default:
             printf("Syscall %d Unknown!!\n", type);
@@ -307,6 +308,7 @@ Simulator::execute()
     if (emRegNew.rMem && (deRegNew.rs1 == rd || deRegNew.rs2 == rd)) {
         deRegNew.bubble = true;
         stall = true;
+        memLoadHazard++;
     }
 
     // data hazard which can be solved by forwarding

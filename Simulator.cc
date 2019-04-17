@@ -8,6 +8,7 @@ Simulator::Simulator(bool singlestep, int strategy, bool ifprint)
 	insts = 0;
 	goodPredict = 0;
 	badPredict = 0;
+	memLoadHazard = 0;
 	this->singlestep = singlestep;
 	this->strategy = strategy;
 	this->ifprint = ifprint;

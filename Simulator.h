@@ -9,6 +9,7 @@ class Simulator {
     unsigned long long insts;
     unsigned long long goodPredict;
     unsigned long long badPredict;
+    unsigned long long memLoadHazard;
     unsigned long long reg[REG_NUM];
     unsigned long long PC;
     unsigned long long PC_taken;
