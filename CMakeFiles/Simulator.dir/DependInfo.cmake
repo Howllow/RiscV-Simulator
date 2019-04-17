@@ -4,14 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/howllow/SharedWithUB/simulator/MM.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/MM.cc.o"
-  "/Users/howllow/SharedWithUB/simulator/Simulator.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/Simulator.cc.o"
-  "/Users/howllow/SharedWithUB/simulator/decode.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/decode.cc.o"
-  "/Users/howllow/SharedWithUB/simulator/execute.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/execute.cc.o"
-  "/Users/howllow/SharedWithUB/simulator/fetch.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/fetch.cc.o"
-  "/Users/howllow/SharedWithUB/simulator/main.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/main.cc.o"
-  "/Users/howllow/SharedWithUB/simulator/memory.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/memory.cc.o"
-  "/Users/howllow/SharedWithUB/simulator/writeBack.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/writeBack.cc.o"
+  "/Users/howllow/SharedWithUB/simulator/src-codes/MM.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/src-codes/MM.cc.o"
+  "/Users/howllow/SharedWithUB/simulator/src-codes/Simulator.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o"
+  "/Users/howllow/SharedWithUB/simulator/src-codes/decode.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/src-codes/decode.cc.o"
+  "/Users/howllow/SharedWithUB/simulator/src-codes/execute.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/src-codes/execute.cc.o"
+  "/Users/howllow/SharedWithUB/simulator/src-codes/fetch.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/src-codes/fetch.cc.o"
+  "/Users/howllow/SharedWithUB/simulator/src-codes/main.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/src-codes/main.cc.o"
+  "/Users/howllow/SharedWithUB/simulator/src-codes/memory.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/src-codes/memory.cc.o"
+  "/Users/howllow/SharedWithUB/simulator/src-codes/writeBack.cc" "/Users/howllow/SharedWithUB/simulator/CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

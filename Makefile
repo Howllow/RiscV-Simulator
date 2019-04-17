@@ -123,221 +123,221 @@ Simulator/fast:
 	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/build
 .PHONY : Simulator/fast
 
-MM.o: MM.cc.o
+src-codes/MM.o: src-codes/MM.cc.o
 
-.PHONY : MM.o
-
-# target to build an object file
-MM.cc.o:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/MM.cc.o
-.PHONY : MM.cc.o
-
-MM.i: MM.cc.i
-
-.PHONY : MM.i
-
-# target to preprocess a source file
-MM.cc.i:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/MM.cc.i
-.PHONY : MM.cc.i
-
-MM.s: MM.cc.s
-
-.PHONY : MM.s
-
-# target to generate assembly for a file
-MM.cc.s:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/MM.cc.s
-.PHONY : MM.cc.s
-
-Simulator.o: Simulator.cc.o
-
-.PHONY : Simulator.o
+.PHONY : src-codes/MM.o
 
 # target to build an object file
-Simulator.cc.o:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/Simulator.cc.o
-.PHONY : Simulator.cc.o
+src-codes/MM.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/MM.cc.o
+.PHONY : src-codes/MM.cc.o
 
-Simulator.i: Simulator.cc.i
+src-codes/MM.i: src-codes/MM.cc.i
 
-.PHONY : Simulator.i
+.PHONY : src-codes/MM.i
 
 # target to preprocess a source file
-Simulator.cc.i:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/Simulator.cc.i
-.PHONY : Simulator.cc.i
+src-codes/MM.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/MM.cc.i
+.PHONY : src-codes/MM.cc.i
 
-Simulator.s: Simulator.cc.s
+src-codes/MM.s: src-codes/MM.cc.s
 
-.PHONY : Simulator.s
+.PHONY : src-codes/MM.s
 
 # target to generate assembly for a file
-Simulator.cc.s:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/Simulator.cc.s
-.PHONY : Simulator.cc.s
+src-codes/MM.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/MM.cc.s
+.PHONY : src-codes/MM.cc.s
 
-decode.o: decode.cc.o
+src-codes/Simulator.o: src-codes/Simulator.cc.o
 
-.PHONY : decode.o
+.PHONY : src-codes/Simulator.o
 
 # target to build an object file
-decode.cc.o:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/decode.cc.o
-.PHONY : decode.cc.o
+src-codes/Simulator.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o
+.PHONY : src-codes/Simulator.cc.o
 
-decode.i: decode.cc.i
+src-codes/Simulator.i: src-codes/Simulator.cc.i
 
-.PHONY : decode.i
+.PHONY : src-codes/Simulator.i
 
 # target to preprocess a source file
-decode.cc.i:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/decode.cc.i
-.PHONY : decode.cc.i
+src-codes/Simulator.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/Simulator.cc.i
+.PHONY : src-codes/Simulator.cc.i
 
-decode.s: decode.cc.s
+src-codes/Simulator.s: src-codes/Simulator.cc.s
 
-.PHONY : decode.s
+.PHONY : src-codes/Simulator.s
 
 # target to generate assembly for a file
-decode.cc.s:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/decode.cc.s
-.PHONY : decode.cc.s
+src-codes/Simulator.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/Simulator.cc.s
+.PHONY : src-codes/Simulator.cc.s
 
-execute.o: execute.cc.o
+src-codes/decode.o: src-codes/decode.cc.o
 
-.PHONY : execute.o
+.PHONY : src-codes/decode.o
 
 # target to build an object file
-execute.cc.o:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/execute.cc.o
-.PHONY : execute.cc.o
+src-codes/decode.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/decode.cc.o
+.PHONY : src-codes/decode.cc.o
 
-execute.i: execute.cc.i
+src-codes/decode.i: src-codes/decode.cc.i
 
-.PHONY : execute.i
+.PHONY : src-codes/decode.i
 
 # target to preprocess a source file
-execute.cc.i:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/execute.cc.i
-.PHONY : execute.cc.i
+src-codes/decode.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/decode.cc.i
+.PHONY : src-codes/decode.cc.i
 
-execute.s: execute.cc.s
+src-codes/decode.s: src-codes/decode.cc.s
 
-.PHONY : execute.s
+.PHONY : src-codes/decode.s
 
 # target to generate assembly for a file
-execute.cc.s:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/execute.cc.s
-.PHONY : execute.cc.s
+src-codes/decode.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/decode.cc.s
+.PHONY : src-codes/decode.cc.s
 
-fetch.o: fetch.cc.o
+src-codes/execute.o: src-codes/execute.cc.o
 
-.PHONY : fetch.o
+.PHONY : src-codes/execute.o
 
 # target to build an object file
-fetch.cc.o:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/fetch.cc.o
-.PHONY : fetch.cc.o
+src-codes/execute.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/execute.cc.o
+.PHONY : src-codes/execute.cc.o
 
-fetch.i: fetch.cc.i
+src-codes/execute.i: src-codes/execute.cc.i
 
-.PHONY : fetch.i
+.PHONY : src-codes/execute.i
 
 # target to preprocess a source file
-fetch.cc.i:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/fetch.cc.i
-.PHONY : fetch.cc.i
+src-codes/execute.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/execute.cc.i
+.PHONY : src-codes/execute.cc.i
 
-fetch.s: fetch.cc.s
+src-codes/execute.s: src-codes/execute.cc.s
 
-.PHONY : fetch.s
+.PHONY : src-codes/execute.s
 
 # target to generate assembly for a file
-fetch.cc.s:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/fetch.cc.s
-.PHONY : fetch.cc.s
+src-codes/execute.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/execute.cc.s
+.PHONY : src-codes/execute.cc.s
 
-main.o: main.cc.o
+src-codes/fetch.o: src-codes/fetch.cc.o
 
-.PHONY : main.o
+.PHONY : src-codes/fetch.o
 
 # target to build an object file
-main.cc.o:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/main.cc.o
-.PHONY : main.cc.o
+src-codes/fetch.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/fetch.cc.o
+.PHONY : src-codes/fetch.cc.o
 
-main.i: main.cc.i
+src-codes/fetch.i: src-codes/fetch.cc.i
 
-.PHONY : main.i
+.PHONY : src-codes/fetch.i
 
 # target to preprocess a source file
-main.cc.i:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/main.cc.i
-.PHONY : main.cc.i
+src-codes/fetch.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/fetch.cc.i
+.PHONY : src-codes/fetch.cc.i
 
-main.s: main.cc.s
+src-codes/fetch.s: src-codes/fetch.cc.s
 
-.PHONY : main.s
+.PHONY : src-codes/fetch.s
 
 # target to generate assembly for a file
-main.cc.s:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/main.cc.s
-.PHONY : main.cc.s
+src-codes/fetch.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/fetch.cc.s
+.PHONY : src-codes/fetch.cc.s
 
-memory.o: memory.cc.o
+src-codes/main.o: src-codes/main.cc.o
 
-.PHONY : memory.o
+.PHONY : src-codes/main.o
 
 # target to build an object file
-memory.cc.o:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/memory.cc.o
-.PHONY : memory.cc.o
+src-codes/main.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/main.cc.o
+.PHONY : src-codes/main.cc.o
 
-memory.i: memory.cc.i
+src-codes/main.i: src-codes/main.cc.i
 
-.PHONY : memory.i
+.PHONY : src-codes/main.i
 
 # target to preprocess a source file
-memory.cc.i:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/memory.cc.i
-.PHONY : memory.cc.i
+src-codes/main.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/main.cc.i
+.PHONY : src-codes/main.cc.i
 
-memory.s: memory.cc.s
+src-codes/main.s: src-codes/main.cc.s
 
-.PHONY : memory.s
+.PHONY : src-codes/main.s
 
 # target to generate assembly for a file
-memory.cc.s:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/memory.cc.s
-.PHONY : memory.cc.s
+src-codes/main.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/main.cc.s
+.PHONY : src-codes/main.cc.s
 
-writeBack.o: writeBack.cc.o
+src-codes/memory.o: src-codes/memory.cc.o
 
-.PHONY : writeBack.o
+.PHONY : src-codes/memory.o
 
 # target to build an object file
-writeBack.cc.o:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/writeBack.cc.o
-.PHONY : writeBack.cc.o
+src-codes/memory.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/memory.cc.o
+.PHONY : src-codes/memory.cc.o
 
-writeBack.i: writeBack.cc.i
+src-codes/memory.i: src-codes/memory.cc.i
 
-.PHONY : writeBack.i
+.PHONY : src-codes/memory.i
 
 # target to preprocess a source file
-writeBack.cc.i:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/writeBack.cc.i
-.PHONY : writeBack.cc.i
+src-codes/memory.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/memory.cc.i
+.PHONY : src-codes/memory.cc.i
 
-writeBack.s: writeBack.cc.s
+src-codes/memory.s: src-codes/memory.cc.s
 
-.PHONY : writeBack.s
+.PHONY : src-codes/memory.s
 
 # target to generate assembly for a file
-writeBack.cc.s:
-	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/writeBack.cc.s
-.PHONY : writeBack.cc.s
+src-codes/memory.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/memory.cc.s
+.PHONY : src-codes/memory.cc.s
+
+src-codes/writeBack.o: src-codes/writeBack.cc.o
+
+.PHONY : src-codes/writeBack.o
+
+# target to build an object file
+src-codes/writeBack.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o
+.PHONY : src-codes/writeBack.cc.o
+
+src-codes/writeBack.i: src-codes/writeBack.cc.i
+
+.PHONY : src-codes/writeBack.i
+
+# target to preprocess a source file
+src-codes/writeBack.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/writeBack.cc.i
+.PHONY : src-codes/writeBack.cc.i
+
+src-codes/writeBack.s: src-codes/writeBack.cc.s
+
+.PHONY : src-codes/writeBack.s
+
+# target to generate assembly for a file
+src-codes/writeBack.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/writeBack.cc.s
+.PHONY : src-codes/writeBack.cc.s
 
 # Help Target
 help:
@@ -348,30 +348,30 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... Simulator"
-	@echo "... MM.o"
-	@echo "... MM.i"
-	@echo "... MM.s"
-	@echo "... Simulator.o"
-	@echo "... Simulator.i"
-	@echo "... Simulator.s"
-	@echo "... decode.o"
-	@echo "... decode.i"
-	@echo "... decode.s"
-	@echo "... execute.o"
-	@echo "... execute.i"
-	@echo "... execute.s"
-	@echo "... fetch.o"
-	@echo "... fetch.i"
-	@echo "... fetch.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
-	@echo "... memory.o"
-	@echo "... memory.i"
-	@echo "... memory.s"
-	@echo "... writeBack.o"
-	@echo "... writeBack.i"
-	@echo "... writeBack.s"
+	@echo "... src-codes/MM.o"
+	@echo "... src-codes/MM.i"
+	@echo "... src-codes/MM.s"
+	@echo "... src-codes/Simulator.o"
+	@echo "... src-codes/Simulator.i"
+	@echo "... src-codes/Simulator.s"
+	@echo "... src-codes/decode.o"
+	@echo "... src-codes/decode.i"
+	@echo "... src-codes/decode.s"
+	@echo "... src-codes/execute.o"
+	@echo "... src-codes/execute.i"
+	@echo "... src-codes/execute.s"
+	@echo "... src-codes/fetch.o"
+	@echo "... src-codes/fetch.i"
+	@echo "... src-codes/fetch.s"
+	@echo "... src-codes/main.o"
+	@echo "... src-codes/main.i"
+	@echo "... src-codes/main.s"
+	@echo "... src-codes/memory.o"
+	@echo "... src-codes/memory.i"
+	@echo "... src-codes/memory.s"
+	@echo "... src-codes/writeBack.o"
+	@echo "... src-codes/writeBack.i"
+	@echo "... src-codes/writeBack.s"
 .PHONY : help
 
 

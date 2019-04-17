@@ -57,132 +57,132 @@ include CMakeFiles/Simulator.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Simulator.dir/flags.make
 
-CMakeFiles/Simulator.dir/main.cc.o: CMakeFiles/Simulator.dir/flags.make
-CMakeFiles/Simulator.dir/main.cc.o: main.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Simulator.dir/main.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/main.cc.o -c /Users/howllow/SharedWithUB/simulator/main.cc
+CMakeFiles/Simulator.dir/src-codes/main.cc.o: CMakeFiles/Simulator.dir/flags.make
+CMakeFiles/Simulator.dir/src-codes/main.cc.o: src-codes/main.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Simulator.dir/src-codes/main.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/src-codes/main.cc.o -c /Users/howllow/SharedWithUB/simulator/src-codes/main.cc
 
-CMakeFiles/Simulator.dir/main.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/main.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/main.cc > CMakeFiles/Simulator.dir/main.cc.i
+CMakeFiles/Simulator.dir/src-codes/main.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/src-codes/main.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/src-codes/main.cc > CMakeFiles/Simulator.dir/src-codes/main.cc.i
 
-CMakeFiles/Simulator.dir/main.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/main.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/main.cc -o CMakeFiles/Simulator.dir/main.cc.s
+CMakeFiles/Simulator.dir/src-codes/main.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/src-codes/main.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/src-codes/main.cc -o CMakeFiles/Simulator.dir/src-codes/main.cc.s
 
-CMakeFiles/Simulator.dir/MM.cc.o: CMakeFiles/Simulator.dir/flags.make
-CMakeFiles/Simulator.dir/MM.cc.o: MM.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Simulator.dir/MM.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/MM.cc.o -c /Users/howllow/SharedWithUB/simulator/MM.cc
+CMakeFiles/Simulator.dir/src-codes/MM.cc.o: CMakeFiles/Simulator.dir/flags.make
+CMakeFiles/Simulator.dir/src-codes/MM.cc.o: src-codes/MM.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Simulator.dir/src-codes/MM.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/src-codes/MM.cc.o -c /Users/howllow/SharedWithUB/simulator/src-codes/MM.cc
 
-CMakeFiles/Simulator.dir/MM.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/MM.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/MM.cc > CMakeFiles/Simulator.dir/MM.cc.i
+CMakeFiles/Simulator.dir/src-codes/MM.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/src-codes/MM.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/src-codes/MM.cc > CMakeFiles/Simulator.dir/src-codes/MM.cc.i
 
-CMakeFiles/Simulator.dir/MM.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/MM.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/MM.cc -o CMakeFiles/Simulator.dir/MM.cc.s
+CMakeFiles/Simulator.dir/src-codes/MM.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/src-codes/MM.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/src-codes/MM.cc -o CMakeFiles/Simulator.dir/src-codes/MM.cc.s
 
-CMakeFiles/Simulator.dir/Simulator.cc.o: CMakeFiles/Simulator.dir/flags.make
-CMakeFiles/Simulator.dir/Simulator.cc.o: Simulator.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Simulator.dir/Simulator.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/Simulator.cc.o -c /Users/howllow/SharedWithUB/simulator/Simulator.cc
+CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: CMakeFiles/Simulator.dir/flags.make
+CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: src-codes/Simulator.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o -c /Users/howllow/SharedWithUB/simulator/src-codes/Simulator.cc
 
-CMakeFiles/Simulator.dir/Simulator.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/Simulator.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/Simulator.cc > CMakeFiles/Simulator.dir/Simulator.cc.i
+CMakeFiles/Simulator.dir/src-codes/Simulator.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/src-codes/Simulator.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/src-codes/Simulator.cc > CMakeFiles/Simulator.dir/src-codes/Simulator.cc.i
 
-CMakeFiles/Simulator.dir/Simulator.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/Simulator.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/Simulator.cc -o CMakeFiles/Simulator.dir/Simulator.cc.s
+CMakeFiles/Simulator.dir/src-codes/Simulator.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/src-codes/Simulator.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/src-codes/Simulator.cc -o CMakeFiles/Simulator.dir/src-codes/Simulator.cc.s
 
-CMakeFiles/Simulator.dir/fetch.cc.o: CMakeFiles/Simulator.dir/flags.make
-CMakeFiles/Simulator.dir/fetch.cc.o: fetch.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Simulator.dir/fetch.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/fetch.cc.o -c /Users/howllow/SharedWithUB/simulator/fetch.cc
+CMakeFiles/Simulator.dir/src-codes/fetch.cc.o: CMakeFiles/Simulator.dir/flags.make
+CMakeFiles/Simulator.dir/src-codes/fetch.cc.o: src-codes/fetch.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Simulator.dir/src-codes/fetch.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/src-codes/fetch.cc.o -c /Users/howllow/SharedWithUB/simulator/src-codes/fetch.cc
 
-CMakeFiles/Simulator.dir/fetch.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/fetch.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/fetch.cc > CMakeFiles/Simulator.dir/fetch.cc.i
+CMakeFiles/Simulator.dir/src-codes/fetch.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/src-codes/fetch.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/src-codes/fetch.cc > CMakeFiles/Simulator.dir/src-codes/fetch.cc.i
 
-CMakeFiles/Simulator.dir/fetch.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/fetch.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/fetch.cc -o CMakeFiles/Simulator.dir/fetch.cc.s
+CMakeFiles/Simulator.dir/src-codes/fetch.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/src-codes/fetch.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/src-codes/fetch.cc -o CMakeFiles/Simulator.dir/src-codes/fetch.cc.s
 
-CMakeFiles/Simulator.dir/decode.cc.o: CMakeFiles/Simulator.dir/flags.make
-CMakeFiles/Simulator.dir/decode.cc.o: decode.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Simulator.dir/decode.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/decode.cc.o -c /Users/howllow/SharedWithUB/simulator/decode.cc
+CMakeFiles/Simulator.dir/src-codes/decode.cc.o: CMakeFiles/Simulator.dir/flags.make
+CMakeFiles/Simulator.dir/src-codes/decode.cc.o: src-codes/decode.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Simulator.dir/src-codes/decode.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/src-codes/decode.cc.o -c /Users/howllow/SharedWithUB/simulator/src-codes/decode.cc
 
-CMakeFiles/Simulator.dir/decode.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/decode.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/decode.cc > CMakeFiles/Simulator.dir/decode.cc.i
+CMakeFiles/Simulator.dir/src-codes/decode.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/src-codes/decode.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/src-codes/decode.cc > CMakeFiles/Simulator.dir/src-codes/decode.cc.i
 
-CMakeFiles/Simulator.dir/decode.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/decode.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/decode.cc -o CMakeFiles/Simulator.dir/decode.cc.s
+CMakeFiles/Simulator.dir/src-codes/decode.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/src-codes/decode.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/src-codes/decode.cc -o CMakeFiles/Simulator.dir/src-codes/decode.cc.s
 
-CMakeFiles/Simulator.dir/execute.cc.o: CMakeFiles/Simulator.dir/flags.make
-CMakeFiles/Simulator.dir/execute.cc.o: execute.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Simulator.dir/execute.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/execute.cc.o -c /Users/howllow/SharedWithUB/simulator/execute.cc
+CMakeFiles/Simulator.dir/src-codes/execute.cc.o: CMakeFiles/Simulator.dir/flags.make
+CMakeFiles/Simulator.dir/src-codes/execute.cc.o: src-codes/execute.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Simulator.dir/src-codes/execute.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/src-codes/execute.cc.o -c /Users/howllow/SharedWithUB/simulator/src-codes/execute.cc
 
-CMakeFiles/Simulator.dir/execute.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/execute.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/execute.cc > CMakeFiles/Simulator.dir/execute.cc.i
+CMakeFiles/Simulator.dir/src-codes/execute.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/src-codes/execute.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/src-codes/execute.cc > CMakeFiles/Simulator.dir/src-codes/execute.cc.i
 
-CMakeFiles/Simulator.dir/execute.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/execute.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/execute.cc -o CMakeFiles/Simulator.dir/execute.cc.s
+CMakeFiles/Simulator.dir/src-codes/execute.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/src-codes/execute.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/src-codes/execute.cc -o CMakeFiles/Simulator.dir/src-codes/execute.cc.s
 
-CMakeFiles/Simulator.dir/memory.cc.o: CMakeFiles/Simulator.dir/flags.make
-CMakeFiles/Simulator.dir/memory.cc.o: memory.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Simulator.dir/memory.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/memory.cc.o -c /Users/howllow/SharedWithUB/simulator/memory.cc
+CMakeFiles/Simulator.dir/src-codes/memory.cc.o: CMakeFiles/Simulator.dir/flags.make
+CMakeFiles/Simulator.dir/src-codes/memory.cc.o: src-codes/memory.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Simulator.dir/src-codes/memory.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/src-codes/memory.cc.o -c /Users/howllow/SharedWithUB/simulator/src-codes/memory.cc
 
-CMakeFiles/Simulator.dir/memory.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/memory.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/memory.cc > CMakeFiles/Simulator.dir/memory.cc.i
+CMakeFiles/Simulator.dir/src-codes/memory.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/src-codes/memory.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/src-codes/memory.cc > CMakeFiles/Simulator.dir/src-codes/memory.cc.i
 
-CMakeFiles/Simulator.dir/memory.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/memory.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/memory.cc -o CMakeFiles/Simulator.dir/memory.cc.s
+CMakeFiles/Simulator.dir/src-codes/memory.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/src-codes/memory.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/src-codes/memory.cc -o CMakeFiles/Simulator.dir/src-codes/memory.cc.s
 
-CMakeFiles/Simulator.dir/writeBack.cc.o: CMakeFiles/Simulator.dir/flags.make
-CMakeFiles/Simulator.dir/writeBack.cc.o: writeBack.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Simulator.dir/writeBack.cc.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/writeBack.cc.o -c /Users/howllow/SharedWithUB/simulator/writeBack.cc
+CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o: CMakeFiles/Simulator.dir/flags.make
+CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o: src-codes/writeBack.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o -c /Users/howllow/SharedWithUB/simulator/src-codes/writeBack.cc
 
-CMakeFiles/Simulator.dir/writeBack.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/writeBack.cc.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/writeBack.cc > CMakeFiles/Simulator.dir/writeBack.cc.i
+CMakeFiles/Simulator.dir/src-codes/writeBack.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulator.dir/src-codes/writeBack.cc.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/howllow/SharedWithUB/simulator/src-codes/writeBack.cc > CMakeFiles/Simulator.dir/src-codes/writeBack.cc.i
 
-CMakeFiles/Simulator.dir/writeBack.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/writeBack.cc.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/writeBack.cc -o CMakeFiles/Simulator.dir/writeBack.cc.s
+CMakeFiles/Simulator.dir/src-codes/writeBack.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulator.dir/src-codes/writeBack.cc.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/howllow/SharedWithUB/simulator/src-codes/writeBack.cc -o CMakeFiles/Simulator.dir/src-codes/writeBack.cc.s
 
 # Object files for target Simulator
 Simulator_OBJECTS = \
-"CMakeFiles/Simulator.dir/main.cc.o" \
-"CMakeFiles/Simulator.dir/MM.cc.o" \
-"CMakeFiles/Simulator.dir/Simulator.cc.o" \
-"CMakeFiles/Simulator.dir/fetch.cc.o" \
-"CMakeFiles/Simulator.dir/decode.cc.o" \
-"CMakeFiles/Simulator.dir/execute.cc.o" \
-"CMakeFiles/Simulator.dir/memory.cc.o" \
-"CMakeFiles/Simulator.dir/writeBack.cc.o"
+"CMakeFiles/Simulator.dir/src-codes/main.cc.o" \
+"CMakeFiles/Simulator.dir/src-codes/MM.cc.o" \
+"CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o" \
+"CMakeFiles/Simulator.dir/src-codes/fetch.cc.o" \
+"CMakeFiles/Simulator.dir/src-codes/decode.cc.o" \
+"CMakeFiles/Simulator.dir/src-codes/execute.cc.o" \
+"CMakeFiles/Simulator.dir/src-codes/memory.cc.o" \
+"CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o"
 
 # External object files for target Simulator
 Simulator_EXTERNAL_OBJECTS =
 
-Simulator: CMakeFiles/Simulator.dir/main.cc.o
-Simulator: CMakeFiles/Simulator.dir/MM.cc.o
-Simulator: CMakeFiles/Simulator.dir/Simulator.cc.o
-Simulator: CMakeFiles/Simulator.dir/fetch.cc.o
-Simulator: CMakeFiles/Simulator.dir/decode.cc.o
-Simulator: CMakeFiles/Simulator.dir/execute.cc.o
-Simulator: CMakeFiles/Simulator.dir/memory.cc.o
-Simulator: CMakeFiles/Simulator.dir/writeBack.cc.o
+Simulator: CMakeFiles/Simulator.dir/src-codes/main.cc.o
+Simulator: CMakeFiles/Simulator.dir/src-codes/MM.cc.o
+Simulator: CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o
+Simulator: CMakeFiles/Simulator.dir/src-codes/fetch.cc.o
+Simulator: CMakeFiles/Simulator.dir/src-codes/decode.cc.o
+Simulator: CMakeFiles/Simulator.dir/src-codes/execute.cc.o
+Simulator: CMakeFiles/Simulator.dir/src-codes/memory.cc.o
+Simulator: CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o
 Simulator: CMakeFiles/Simulator.dir/build.make
 Simulator: CMakeFiles/Simulator.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/howllow/SharedWithUB/simulator/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable Simulator"

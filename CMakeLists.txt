@@ -1,6 +1,0 @@
-cmake_minimum_required(VERSION 3.13)
-PROJECT(Simulator)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-Wall")
-include_directories(${CMAKE_SOURCE_DIR})
-add_executable(Simulator main.cc MM.cc Simulator.cc fetch.cc decode.cc execute.cc memory.cc writeBack.cc)
