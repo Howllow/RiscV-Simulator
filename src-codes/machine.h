@@ -10,6 +10,7 @@
 #include <elfio/elfio.hpp>
 #include "cache.h"
 
+
 #define REG_NUM 32
 #define Stack_Base 0xc0000000
 #define Stack_Size 0x400000
@@ -120,7 +121,7 @@
 #define REM 53
 #define UNK 54
 extern unsigned char** mem[1024];
-Cache l1;
-Cache l2;
-Cache llc;
+extern Cache l1;
+extern Cache l2;
+extern Cache llc;
 #endif

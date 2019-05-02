@@ -3,6 +3,7 @@
 
 CMakeFiles/Simulator.dir/src-codes/MM.cc.o: src-codes/MM.cc
 CMakeFiles/Simulator.dir/src-codes/MM.cc.o: src-codes/MM.h
+CMakeFiles/Simulator.dir/src-codes/MM.cc.o: src-codes/cache.h
 CMakeFiles/Simulator.dir/src-codes/MM.cc.o: src-codes/machine.h
 CMakeFiles/Simulator.dir/src-codes/MM.cc.o: src-codes/storage.h
 CMakeFiles/Simulator.dir/src-codes/MM.cc.o: elfio/elf_types.hpp
@@ -20,6 +21,7 @@ CMakeFiles/Simulator.dir/src-codes/MM.cc.o: elfio/elfio_utils.hpp
 CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: src-codes/MM.h
 CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: src-codes/Simulator.cc
 CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: src-codes/Simulator.h
+CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: src-codes/cache.h
 CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: src-codes/machine.h
 CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: src-codes/storage.h
 CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o: elfio/elf_types.hpp
@@ -40,6 +42,7 @@ CMakeFiles/Simulator.dir/src-codes/cache.cc.o: src-codes/storage.h
 
 CMakeFiles/Simulator.dir/src-codes/decode.cc.o: src-codes/MM.h
 CMakeFiles/Simulator.dir/src-codes/decode.cc.o: src-codes/Simulator.h
+CMakeFiles/Simulator.dir/src-codes/decode.cc.o: src-codes/cache.h
 CMakeFiles/Simulator.dir/src-codes/decode.cc.o: src-codes/decode.cc
 CMakeFiles/Simulator.dir/src-codes/decode.cc.o: src-codes/machine.h
 CMakeFiles/Simulator.dir/src-codes/decode.cc.o: src-codes/storage.h
@@ -57,6 +60,7 @@ CMakeFiles/Simulator.dir/src-codes/decode.cc.o: elfio/elfio_utils.hpp
 
 CMakeFiles/Simulator.dir/src-codes/execute.cc.o: src-codes/MM.h
 CMakeFiles/Simulator.dir/src-codes/execute.cc.o: src-codes/Simulator.h
+CMakeFiles/Simulator.dir/src-codes/execute.cc.o: src-codes/cache.h
 CMakeFiles/Simulator.dir/src-codes/execute.cc.o: src-codes/execute.cc
 CMakeFiles/Simulator.dir/src-codes/execute.cc.o: src-codes/machine.h
 CMakeFiles/Simulator.dir/src-codes/execute.cc.o: src-codes/storage.h
@@ -74,6 +78,7 @@ CMakeFiles/Simulator.dir/src-codes/execute.cc.o: elfio/elfio_utils.hpp
 
 CMakeFiles/Simulator.dir/src-codes/fetch.cc.o: src-codes/MM.h
 CMakeFiles/Simulator.dir/src-codes/fetch.cc.o: src-codes/Simulator.h
+CMakeFiles/Simulator.dir/src-codes/fetch.cc.o: src-codes/cache.h
 CMakeFiles/Simulator.dir/src-codes/fetch.cc.o: src-codes/fetch.cc
 CMakeFiles/Simulator.dir/src-codes/fetch.cc.o: src-codes/machine.h
 CMakeFiles/Simulator.dir/src-codes/fetch.cc.o: src-codes/storage.h
@@ -109,6 +114,7 @@ CMakeFiles/Simulator.dir/src-codes/main.cc.o: elfio/elfio_utils.hpp
 
 CMakeFiles/Simulator.dir/src-codes/memory.cc.o: src-codes/MM.h
 CMakeFiles/Simulator.dir/src-codes/memory.cc.o: src-codes/Simulator.h
+CMakeFiles/Simulator.dir/src-codes/memory.cc.o: src-codes/cache.h
 CMakeFiles/Simulator.dir/src-codes/memory.cc.o: src-codes/machine.h
 CMakeFiles/Simulator.dir/src-codes/memory.cc.o: src-codes/memory.cc
 CMakeFiles/Simulator.dir/src-codes/memory.cc.o: src-codes/storage.h
@@ -126,6 +132,7 @@ CMakeFiles/Simulator.dir/src-codes/memory.cc.o: elfio/elfio_utils.hpp
 
 CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o: src-codes/MM.h
 CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o: src-codes/Simulator.h
+CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o: src-codes/cache.h
 CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o: src-codes/machine.h
 CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o: src-codes/storage.h
 CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o: src-codes/writeBack.cc

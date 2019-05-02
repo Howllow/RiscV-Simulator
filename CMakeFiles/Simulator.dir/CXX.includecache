@@ -6,11 +6,13 @@
 
 #IncludeRegexTransform: 
 
+/Users/howllow/SharedWithUB/simulator/src-codes/MM.cc
+MM.h
+/Users/howllow/SharedWithUB/simulator/src-codes/MM.h
+
 /Users/howllow/SharedWithUB/simulator/src-codes/MM.h
 machine.h
 /Users/howllow/SharedWithUB/simulator/src-codes/machine.h
-storage.h
-/Users/howllow/SharedWithUB/simulator/src-codes/storage.h
 
 /Users/howllow/SharedWithUB/simulator/src-codes/Simulator.h
 MM.h
@@ -41,16 +43,20 @@ cmath
 -
 elfio/elfio.hpp
 -
+cache.h
+/Users/howllow/SharedWithUB/simulator/src-codes/cache.h
 
 /Users/howllow/SharedWithUB/simulator/src-codes/main.cc
 Simulator.h
 /Users/howllow/SharedWithUB/simulator/src-codes/Simulator.h
-cache.h
-/Users/howllow/SharedWithUB/simulator/src-codes/cache.h
 fstream
 -
 cstring
 -
+
+/Users/howllow/SharedWithUB/simulator/src-codes/memory.cc
+Simulator.h
+/Users/howllow/SharedWithUB/simulator/src-codes/Simulator.h
 
 /Users/howllow/SharedWithUB/simulator/src-codes/storage.h
 stdint.h

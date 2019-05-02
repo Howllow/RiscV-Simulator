@@ -20,13 +20,12 @@ Simulator::memory()
         if (!usecache) {
             StoreBySize(addr, op2, emReg.memsize);
             cycles += 25;
+            //printf("MEM: write size:%d value: 0x%.16llx at 0x%llx\n", emReg.memsize, (uint64_t)op2, addr);
         }
         else {
             int time;
             int hit;
-            char data[256];
-            *((uint64_t*)data) = op2; 
-            l1.HandleRequest(addr, emReg.memsize, 0, data, hit, time);
+            l1.HandleRequest(addr, emReg.memsize, 0, (char*)&op2, hit, time);
             cycles += time;
         }
         mwRegNew.out = addr;
@@ -49,7 +48,6 @@ Simulator::memory()
             out = (int64_t)out;
         else 
             out = (uint64_t) out;
-
         mwRegNew.out = out;
         if (ifprint)
             printf("MEM: read value 0x%.8llx from mem 0x%llx\n", out, addr);

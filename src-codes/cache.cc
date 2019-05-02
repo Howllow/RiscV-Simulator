@@ -66,11 +66,11 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
     else {
       //printf("hit!\n");
       if (!read) {
-        //printf("read!\n");
         memcpy(config_.blocks[hit_pos].data + off, content, bytes);
         //write through
         if (config_.write_through) {
           int lhit, ltime;
+          //printf("write through 0x%lx\n", addr);
           lower_->HandleRequest(addr, bytes, 0, content, lhit, ltime);
           stats_.access_time += latency_.bus_latency;
           time += latency_.bus_latency + ltime;
@@ -150,7 +150,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
       }
       // no write allocate, write to storage directly
       else {
-        lower_->HandleRequest(addr - off, bytes, 0, content, lower_hit, lower_time);
+        lower_->HandleRequest(addr, bytes, 0, content, lower_hit, lower_time);
         time += latency_.bus_latency + lower_time;
         stats_.access_time += latency_.bus_latency;
       }
