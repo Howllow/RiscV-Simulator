@@ -4,20 +4,40 @@
 #include <stdint.h>
 #include "storage.h"
 
-typedef struct CacheConfig_ {
-  int size;
-  int associativity;
-  int set_num; // Number of cache sets
-  int write_through; // 0|1 for back|through
-  int write_allocate; // 0|1 for no-alc|alc
-  CacheConfig_(int size, int assoc, int set_num, int writet, int writea) {
-    this->size = size;
-    associativity = assoc;
-    this->set_num = set_num;
-    write_allocate = writea;
-    write_through = writet;
+ 
+struct CacheBlock {
+  bool valid;
+  bool dirty;
+  int lru;
+  uint64_t tag;
+  char data[256];
+  CacheBlock() {
+    valid = false;
+    dirty = false;
+    lru = 0;
   }
-} CacheConfig;
+}
+class CacheConfig {
+  public:
+    int blocksize;
+    int capacity;
+    int associativity;
+    int blocknum;
+    int set_num; // Number of cache sets
+    int write_through; // 0|1 for back|through
+    int write_allocate; // 0|1 for no-alc|alc
+    CacheBlock* blocks;
+    CacheConfig() {blocks = new CacheBlock[50000];}
+    CacheConfig(int blocksize, int assoc, int capacity, int writet, int writea) {
+      this->blocksize = blocksize;
+      associativity = assoc;
+      this->capacity = capacity;
+      this->set_num = capacity / (assoc * blocksize);
+      this->blocknum = this->set_num * assoc;
+      write_allocate = writea;
+      write_through = writet;
+    }
+};
 
 typedef
 class Cache: public Storage {

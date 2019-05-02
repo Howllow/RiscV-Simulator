@@ -96,3 +96,28 @@ LoadBySize(uint32_t addr, int memsize)
     }
     return x;
 }
+
+
+void Memory::HandleRequest(uint32_t addr, int bytes, int read, char* content, int &hit, int &time) 
+{
+    if (read == 1) {
+        for (int i = 0; i < bytes; i++) {
+            if (!check_Page(addr + i))
+                get_Page(addr + i);
+            *(content + i) = getB(addr + i);
+        }
+    }
+        
+    else {
+        if (!check_Page(addr)) {
+            printf("Invalid address!\n");
+        }
+        uint32_t first_id = GET_FPN(addr);
+        uint32_t second_id = GET_SPN(addr);
+        uint32_t offset = GET_OFF(addr);
+        memcpy(&mem[first_id][second_id][offset], content, bytes);
+    }
+    hit = 1;
+    time = latency_.hit_latency + latency_.bus_latency;
+    stats_.access_time += time;
+}

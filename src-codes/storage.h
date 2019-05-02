@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "MM.h"
+
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
   TypeName(const TypeName&); \
   void operator=(const TypeName&)
@@ -42,10 +44,8 @@ class Storage {
   // [i|o] content: in|out data
   // [out] hit: 0|1 for miss|hit
   // [out] time: total access time
-  virtual void HandleRequest(uint64_t addr, int bytes, int read,
-                             char *content, int &hit, int &time) = 0;
-
- protected:
+  virtual void HandleRequest(uint32_t addr, int bytes, int read,
+                             uint64_t &content, int &hit, int &time) = 0;
   StorageStats stats_;
   StorageLatency latency_;
 };
