@@ -8,6 +8,7 @@
 #include <cstdarg>
 #include <cmath>
 #include <elfio/elfio.hpp>
+#include "cache.h"
 
 #define REG_NUM 32
 #define Stack_Base 0xc0000000
@@ -119,5 +120,7 @@
 #define REM 53
 #define UNK 54
 extern unsigned char** mem[1024];
-
+Cache l1;
+Cache l2;
+Cache llc;
 #endif

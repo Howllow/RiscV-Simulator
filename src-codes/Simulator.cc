@@ -1,6 +1,6 @@
 #include "Simulator.h"
 
-Simulator::Simulator(bool singlestep, int strategy, bool ifprint) 
+Simulator::Simulator(bool cache, bool singlestep, int strategy, bool ifprint) 
 {
 	PC = 0;
 	stall = false;
@@ -10,6 +10,7 @@ Simulator::Simulator(bool singlestep, int strategy, bool ifprint)
 	badPredict = 0;
 	memLoadHazard = 0;
 	controlHazard = 0;
+	usecache = cache;
 	this->singlestep = singlestep;
 	this->strategy = strategy;
 	this->ifprint = ifprint;

@@ -1,5 +1,4 @@
 #include "Simulator.h"
-#include "cache.h"
 #include <fstream>
 #include <cstring>
 using namespace std;
@@ -7,8 +6,13 @@ using namespace std;
 char* filename = NULL;
 bool single_step = false;
 bool printinfo = false;
+bool usecache = false;
 int strategy = 0;
 CacheBlock blocks[10000000];
+CacheBlock l1blocks[512];
+CacheBlock l2blocks[4096];
+CacheBlock llcblocks[131072];
+Memory m;
 bool Parser(int argc, char** argv);
 Simulator* simulator;
 ELFIO::elfio* elf_reader;
@@ -19,7 +23,31 @@ int main(int argc, char** argv)
         mem[i] = NULL;
     if (!Parser(argc, argv)) 
         return -1;
-    simulator = new Simulator(single_step, strategy, printinfo);
+    simulator = new Simulator(usecache, single_step, strategy, printinfo);
+    StorageStats stats;
+    memset(&stats, 0, sizeof(stats));
+    m.SetStats(stats);
+    l1.SetStats(stats);
+    l2.SetStats(stats);
+    llc.SetStats(stats);
+    StorageLatency l1la;
+    StorageLatency l2la;
+    StorageLatency llcla;
+    StorageLatency mla;
+    l1la.bus_latency = 0;
+    l1la.hit_latency = 1;
+    l2la.bus_latency = 0;
+    l2la.hit_latency = 8;
+    llcla.bus_latency = 0;
+    llcla.hit_latency = 20;
+    mla.bus_latency = 0;
+    mla.hit_latency = 25;
+    CacheConfig l1config = CacheConfig(l1blocks, 64, 8, 32768, 0, 0);
+    CacheConfig l2config = CacheConfig(l2blocks, 64, 8, 32768 * 8, 0, 0);
+    CacheConfig llcconfig = CacheConfig(llcblocks, 64, 8, 8 * 1024 * 1024, 0, 0);
+    l1.SetConfig(l1config);
+    l2.SetConfig(l2config);
+    llc.SetConfig(llcconfig);
     elf_reader = new ELFIO::elfio();
     read_ELF(filename, elf_reader);
     simulator->PC = elf_reader->get_entry();
@@ -124,6 +152,9 @@ bool Parser(int argc, char** argv)
     for (int i = 1; i < argc; i++) {
         if (argv[i][0] == '-') {
             switch (argv[i][1]){
+                case 'u':
+                usecache = true;
+                break;
                 case 'c':
                 CacheTest(argv[i + 1], atoi(argv[i + 2]));
                 break;

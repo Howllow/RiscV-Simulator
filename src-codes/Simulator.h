@@ -21,7 +21,8 @@ class Simulator {
     int strategy;
     bool ifprint;
     bool singlestep;
-    Simulator(bool singlestep, int strategy, bool ifprint);
+    bool usecache;
+    Simulator(bool cache, bool singlestep, int strategy, bool ifprint);
     ~Simulator();
 
     void Run();
