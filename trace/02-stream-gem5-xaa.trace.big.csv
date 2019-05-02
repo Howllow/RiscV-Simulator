@@ -1,0 +1,3 @@
+Capacity,BlockSize,Associativity,WriteThrough,WriteAllocate,MissRate,TotalTime
+33554432,1,1,0,0,0.906824,3117356
+33554432,1,1,0,1,0.906793,3117376

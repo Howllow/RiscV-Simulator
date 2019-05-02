@@ -177,6 +177,33 @@ src-codes/Simulator.cc.s:
 	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/Simulator.cc.s
 .PHONY : src-codes/Simulator.cc.s
 
+src-codes/cache.o: src-codes/cache.cc.o
+
+.PHONY : src-codes/cache.o
+
+# target to build an object file
+src-codes/cache.cc.o:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/cache.cc.o
+.PHONY : src-codes/cache.cc.o
+
+src-codes/cache.i: src-codes/cache.cc.i
+
+.PHONY : src-codes/cache.i
+
+# target to preprocess a source file
+src-codes/cache.cc.i:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/cache.cc.i
+.PHONY : src-codes/cache.cc.i
+
+src-codes/cache.s: src-codes/cache.cc.s
+
+.PHONY : src-codes/cache.s
+
+# target to generate assembly for a file
+src-codes/cache.cc.s:
+	$(MAKE) -f CMakeFiles/Simulator.dir/build.make CMakeFiles/Simulator.dir/src-codes/cache.cc.s
+.PHONY : src-codes/cache.cc.s
+
 src-codes/decode.o: src-codes/decode.cc.o
 
 .PHONY : src-codes/decode.o
@@ -354,6 +381,9 @@ help:
 	@echo "... src-codes/Simulator.o"
 	@echo "... src-codes/Simulator.i"
 	@echo "... src-codes/Simulator.s"
+	@echo "... src-codes/cache.o"
+	@echo "... src-codes/cache.i"
+	@echo "... src-codes/cache.s"
 	@echo "... src-codes/decode.o"
 	@echo "... src-codes/decode.i"
 	@echo "... src-codes/decode.s"

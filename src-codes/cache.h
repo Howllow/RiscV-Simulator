@@ -2,6 +2,8 @@
 #define CACHE_CACHE_H_
 
 #include <stdint.h>
+#include <cstring>
+#include <stdio.h>
 #include "storage.h"
 
  
@@ -27,9 +29,10 @@ class CacheConfig {
     int write_through; // 0|1 for back|through
     int write_allocate; // 0|1 for no-alc|alc
     CacheBlock* blocks;
-    CacheConfig() {blocks = new CacheBlock[50000];}
-    CacheConfig(int blocksize, int assoc, int capacity, int writet, int writea) {
+    CacheConfig() {}
+    CacheConfig(CacheBlock* b, int blocksize, int assoc, int capacity, int writet, int writea) {
       this->blocksize = blocksize;
+      blocks = b;
       associativity = assoc;
       this->capacity = capacity;
       this->set_num = capacity / (assoc * blocksize);

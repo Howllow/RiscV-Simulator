@@ -23,7 +23,7 @@ class Memory: public Storage {
   ~Memory() {}
 
   // Main access process
-  void HandleRequest(uint64_t addr, int bytes, int read,
+  void HandleRequest(uint32_t addr, int bytes, int read,
                      char *content, int &hit, int &time);
 
  private:

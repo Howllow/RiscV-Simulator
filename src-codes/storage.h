@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "MM.h"
 
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
   TypeName(const TypeName&); \
@@ -45,7 +44,7 @@ class Storage {
   // [out] hit: 0|1 for miss|hit
   // [out] time: total access time
   virtual void HandleRequest(uint32_t addr, int bytes, int read,
-                             uint64_t &content, int &hit, int &time) = 0;
+                             char* content, int &hit, int &time) = 0;
   StorageStats stats_;
   StorageLatency latency_;
 };

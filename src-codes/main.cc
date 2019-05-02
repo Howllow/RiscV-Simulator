@@ -1,4 +1,5 @@
 #include "Simulator.h"
+#include "cache.h"
 #include <fstream>
 #include <cstring>
 using namespace std;
@@ -7,6 +8,7 @@ char* filename = NULL;
 bool single_step = false;
 bool printinfo = false;
 int strategy = 0;
+CacheBlock blocks[10000000];
 bool Parser(int argc, char** argv);
 Simulator* simulator;
 ELFIO::elfio* elf_reader;
@@ -26,15 +28,18 @@ int main(int argc, char** argv)
     return 0;
 }
 
-void simulateCache(char* cachefile, CacheConfig config, ofstream &csv)
+void simulateCache(char* cachefile, int bsz, int ass, int csz, int wt, int wa, ofstream &csv)
 {
     Memory m;
     Cache c;
     c.SetLower(&m);
+    CacheConfig config = CacheConfig(blocks, bsz, ass, csz, wt, wa);
+    c.SetConfig(config);
     StorageStats s;
     StorageLatency ml;
+    CacheBlock* todelete = config.blocks;
     ml.bus_latency = 0;
-    ml.hit_latency = 100;
+    ml.hit_latency = 20;
     StorageLatency cl;
     cl.bus_latency = 0;
     cl.hit_latency = 1;
@@ -44,7 +49,7 @@ void simulateCache(char* cachefile, CacheConfig config, ofstream &csv)
     m.SetStats(s);
     m.SetLatency(ml);
     ifstream file(cachefile);
-    if (!cachefile.is_open()) {
+    if (!file.is_open()) {
         printf("openfile error!\n");
         exit(-1);
     }
@@ -53,9 +58,9 @@ void simulateCache(char* cachefile, CacheConfig config, ofstream &csv)
     char tmp[256] = {0};
     int time;
     int hit;
-    int totaltime = 0;
+    long long totaltime = 0;
     while(file >> rw >> hex >> addr) {
-        switch(type)
+        switch(rw)
         {
             case 'r':
             c.HandleRequest(addr, 1, 1, tmp, hit, time);
@@ -68,38 +73,37 @@ void simulateCache(char* cachefile, CacheConfig config, ofstream &csv)
         }
         totaltime += time;
     }
-    float missrate = ((float)c.stats_.missnum) / c.stats_.access_counter;
-    csv << config.capacity << "," << config.blocksize << "," << config.associativity << "," <<
-    config.write_through << "," << config.write_allocate << "," << missrate << "," << totaltime 
+
+    memset(blocks, 0, sizeof(blocks));
+    float missrate = ((float)c.stats_.miss_num) / c.stats_.access_counter;
+    printf("miss successful!\n");
+    csv << csz << "," << bsz << "," << ass << "," <<
+    wt << "," << wa << "," << missrate << "," << totaltime 
     << endl;
+    return;
 }
 void CacheTest(char* cachefile, int testnum) 
 {
-    for (unsigned int ad = 0; ad < Max_Addr; ad++) {
+    for (unsigned int ad = 0; ad < 0x200000; ad++) {
 		if (!check_Page(ad))
 			get_Page(ad);
 		setB(ad, 0);
 	}
+    ofstream csv((string)cachefile + ".small.csv");
     switch(testnum) 
     {
         case 1:
-        ofstream csv((string)cachefile + '.csv');
         csv << "Capacity,BlockSize,Associativity,WriteThrough,WriteAllocate,MissRate,TotalTime\n";
-        for (csz = 32768; csz <= 32768 * 1024; csz *= 2){
+        for (int csz = 32768; csz <= 32768 * 1024; csz *= 2){
             for (int ass = 1; ass <= 32; ass *= 2) {
-                for (bsz = 1; bsz <= 4096; bsz *= 2) {
-                    CacheConfig* config1;
-                    CacheConfig* config2;
-                    CacheConfig* config3;
-                    CacheConfig* config4;
-                    config1 = new CacheConfig(bsz, ass, csz, 0, 0);
-                    config2 = new CacheConfig(bsz, ass, csz, 1, 0);
-                    config3 = new CacheConfig(bsz, ass, csz, 0, 1);
-                    config4 = new CacheConfig(bsz, ass, csz, 1, 1);
-                    simulateCache(cachefile, config1, csv);
-                    simulateCache(cachefile, config2, csv);
-                    simulateCache(cachefile, config3, csv);
-                    simulateCache(cachefile, config4, csv);
+                for (int bsz = 1; bsz <= 256; bsz *= 2) {
+                    int blocknum = csz / bsz;
+                    if (blocknum % ass)
+                        continue;
+                    simulateCache(cachefile, bsz, ass, csz, 0, 0, csv);
+                    simulateCache(cachefile, bsz, ass, csz, 0, 1, csv);
+                    simulateCache(cachefile, bsz, ass, csz, 1, 0, csv);
+                    simulateCache(cachefile, bsz, ass, csz, 1, 1, csv);
                 }
             }
         }

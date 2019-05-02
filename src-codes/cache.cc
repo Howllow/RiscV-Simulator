@@ -14,9 +14,12 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
   unsigned b_bits = (int)log2(config_.blocksize);
   unsigned s_bits = (int)log2(config_.set_num);
   unsigned t_bits = 32 - b_bits - s_bits;
+  //printf("%d, %d, %d\n", config_.blocksize, config_.set_num, config_.associativity);
+  //printf("%d, %d, %d\n", b_bits, s_bits, t_bits);
   unsigned tag = (addr >> (b_bits + s_bits)) & ((1 << t_bits) - 1);
   unsigned set = (addr >> b_bits) & ((1 << s_bits) - 1);
   unsigned off = addr & ((1 << (int)log2(config_.blocksize)) - 1);
+  //printf("0x%lx, 0x%lx, 0x%lx, 0x%lx\n", addr, tag, set, off);
   int hit_pos = -1;
   int replace_pos = -1; 
 
@@ -38,6 +41,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
 
     //miss
     if (!hit) {
+      //printf("miss!\n");
       stats_.miss_num++;
       int max = -1;
       bool full = true;
@@ -60,7 +64,9 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
     }
     //hit
     else {
+      //printf("hit!\n");
       if (!read) {
+        //printf("read!\n");
         memcpy(config_.blocks[hit_pos].data + off, content, bytes);
         //write through
         if (config_.write_through) {
@@ -76,10 +82,14 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
         }
       }
       else {
+        //printf("write!\n");
+        //printf("hitpos:%d\n", hit_pos);
         memcpy(content, config_.blocks[hit_pos].data + off, bytes);
+        //printf("write successful!\n");
         return;
       }
     }
+
 
   }
   // Prefetch?
@@ -128,7 +138,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
             lower_->HandleRequest(rep_addr, config_.blocksize, 0, lblock.data, lower_hit, lower_time);
             stats_.access_time += latency_.bus_latency;
             time += latency_.bus_latency + lower_time;
-        }
+          }
         lblock.valid = true;
         lblock.lru = 0;
         lblock.dirty = true;
@@ -146,6 +156,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
       }
     }
   }
+
 }
 
 int Cache::BypassDecision() {

@@ -1,12 +1,13 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Simulator.dir/src-codes/main.cc.o"
-  "CMakeFiles/Simulator.dir/src-codes/MM.cc.o"
-  "CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o"
-  "CMakeFiles/Simulator.dir/src-codes/fetch.cc.o"
+  "CMakeFiles/Simulator.dir/src-codes/cache.cc.o"
   "CMakeFiles/Simulator.dir/src-codes/decode.cc.o"
   "CMakeFiles/Simulator.dir/src-codes/execute.cc.o"
+  "CMakeFiles/Simulator.dir/src-codes/fetch.cc.o"
   "CMakeFiles/Simulator.dir/src-codes/memory.cc.o"
+  "CMakeFiles/Simulator.dir/src-codes/Simulator.cc.o"
   "CMakeFiles/Simulator.dir/src-codes/writeBack.cc.o"
+  "CMakeFiles/Simulator.dir/src-codes/MM.cc.o"
+  "CMakeFiles/Simulator.dir/src-codes/main.cc.o"
   "Simulator.pdb"
   "Simulator"
 )

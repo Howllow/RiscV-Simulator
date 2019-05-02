@@ -101,6 +101,7 @@ LoadBySize(uint32_t addr, int memsize)
 void Memory::HandleRequest(uint32_t addr, int bytes, int read, char* content, int &hit, int &time) 
 {
     if (read == 1) {
+        //printf("read 0x%lx\n", addr);
         for (int i = 0; i < bytes; i++) {
             if (!check_Page(addr + i))
                 get_Page(addr + i);
@@ -110,7 +111,8 @@ void Memory::HandleRequest(uint32_t addr, int bytes, int read, char* content, in
         
     else {
         if (!check_Page(addr)) {
-            printf("Invalid address!\n");
+            get_Page(addr);
+            //printf("Invalid address!\n");
         }
         uint32_t first_id = GET_FPN(addr);
         uint32_t second_id = GET_SPN(addr);
