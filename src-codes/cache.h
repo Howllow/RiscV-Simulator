@@ -16,7 +16,7 @@ struct CacheBlock {
     dirty = false;
     lru = 0;
   }
-}
+};
 class CacheConfig {
   public:
     int blocksize;
@@ -50,7 +50,7 @@ class Cache: public Storage {
   void GetConfig(CacheConfig cc);
   void SetLower(Storage *ll) { lower_ = ll; }
   // Main access process
-  void HandleRequest(uint64_t addr, int bytes, int read,
+  void HandleRequest(uint32_t addr, int bytes, int read,
                      char *content, int &hit, int &time);
 
  private:

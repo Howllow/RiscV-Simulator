@@ -1,5 +1,4 @@
 #include "cache.h"
-#include "def.h"
 #include "math.h"
 
 void Cache::SetConfig(CacheConfig cc) {
@@ -17,7 +16,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
   unsigned t_bits = 32 - b_bits - s_bits;
   unsigned tag = (addr >> (b_bits + s_bits)) & ((1 << t_bits) - 1);
   unsigned set = (addr >> b_bits) & ((1 << s_bits) - 1);
-  unsigned off = addr & ((1 << (int)log2(blocksize)) - 1);
+  unsigned off = addr & ((1 << (int)log2(config_.blocksize)) - 1);
   int hit_pos = -1;
   int replace_pos = -1; 
 
@@ -26,15 +25,15 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
     bool valid;
     for (int i = 0; i < config_.associativity; i++) {
       int id = set * config_.associativity + i;
-      valid = blocks[id].valid;
-      findtag = blocks[id].tag;
+      valid = config_.blocks[id].valid;
+      unsigned findtag = config_.blocks[id].tag;
       if (valid && tag == findtag) {
         hit = 1;
         hit_pos = id;
-        blocks[id].lru = 0;
+        config_.blocks[id].lru = 0;
       }
       else if (valid && tag != findtag)
-        blocks[id].lru++;
+        config_.blocks[id].lru++;
     }
 
     //miss
@@ -44,9 +43,9 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
       bool full = true;
       for (int i = 0; i < config_.associativity; i++) {
         int id = set * config_.associativity + i;
-        if (blocks[id].valid) {
-          if (blocks[id].lru > max) {
-            max = blocks[id].lru;
+        if (config_.blocks[id].valid) {
+          if (config_.blocks[id].lru > max) {
+            max = config_.blocks[id].lru;
             replace_pos = id;
           }
         }
@@ -62,7 +61,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
     //hit
     else {
       if (!read) {
-        memcpy(blocks[hit_pos].data + off, content, bytes);
+        memcpy(config_.blocks[hit_pos].data + off, content, bytes);
         //write through
         if (config_.write_through) {
           int lhit, ltime;
@@ -73,11 +72,11 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
         }
         //write back
         else {
-          blocks[hit_pos].dirty = true;
+          config_.blocks[hit_pos].dirty = true;
         }
       }
       else {
-        memcpy(content, blocks[hit_pos].data + off, bytes);
+        memcpy(content, config_.blocks[hit_pos].data + off, bytes);
         return;
       }
     }
@@ -95,7 +94,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
       hit = 0;
       time += latency_.bus_latency + lower_time;
       stats_.access_time += latency_.bus_latency;
-      CacheBlock &lblock = blocks[replace_pos]; //victim
+      CacheBlock &lblock = config_.blocks[replace_pos]; //victim
       //dirty block
       if (lblock.valid && lblock.dirty) {
         unsigned rep_addr = (lblock.tag << (32 - t_bits)) + (set << b_bits);
@@ -122,7 +121,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
                             lower_hit, lower_time);
           time += latency_.bus_latency + lower_time;
           stats_.access_time += latency_.bus_latency;
-          CacheBlock &lblock = blocks[replace_pos]; //victim
+          CacheBlock &lblock = config_.blocks[replace_pos]; //victim
           //dirty block
           if (lblock.valid && lblock.dirty) {
             unsigned rep_addr = (lblock.tag << (32 - t_bits)) + (set << b_bits);
@@ -135,7 +134,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
         lblock.dirty = true;
         lblock.tag = tag;
         //place the block from lower level
-        memcpy(lblock.data, ldata, blocksize);
+        memcpy(lblock.data, ldata, config_.blocksize);
         //write content into block
         memcpy(lblock.data + off, content, bytes);
       }
@@ -143,21 +142,21 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
       else {
         lower_->HandleRequest(addr - off, bytes, 0, content, lower_hit, lower_time);
         time += latency_.bus_latency + lower_time;
-        stats_.access_time += latency.bus_latency;
+        stats_.access_time += latency_.bus_latency;
       }
     }
   }
 }
 
 int Cache::BypassDecision() {
-  return FALSE;
+  return false;
 }
 
 void Cache::PartitionAlgorithm() {
 }
 
 int Cache::ReplaceDecision() {
-  return TRUE;
+  return true;
   //return FALSE;
 }
 
@@ -165,7 +164,7 @@ void Cache::ReplaceAlgorithm(){
 }
 
 int Cache::PrefetchDecision() {
-  return FALSE;
+  return false;
 }
 
 void Cache::PrefetchAlgorithm() {
