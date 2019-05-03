@@ -14,63 +14,31 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
   unsigned b_bits = (int)log2(config_.blocksize);
   unsigned s_bits = (int)log2(config_.set_num);
   unsigned t_bits = 32 - b_bits - s_bits;
-  //printf("%d, %d, %d\n", config_.blocksize, config_.set_num, config_.associativity);
-  //printf("%d, %d, %d\n", b_bits, s_bits, t_bits);
   unsigned tag = (addr >> (b_bits + s_bits)) & ((1 << t_bits) - 1);
   unsigned set = (addr >> b_bits) & ((1 << s_bits) - 1);
   unsigned off = addr & ((1 << (int)log2(config_.blocksize)) - 1);
-  //printf("0x%lx, 0x%lx, 0x%lx, 0x%lx\n", addr, tag, set, off);
   int hit_pos = -1;
   int replace_pos = -1; 
 
   //get data or store data
   if (!BypassDecision()) {
-    bool valid;
-    for (int i = 0; i < config_.associativity; i++) {
-      int id = set * config_.associativity + i;
-      valid = config_.blocks[id].valid;
-      unsigned findtag = config_.blocks[id].tag;
-      if (valid && tag == findtag) {
-        hit = 1;
-        hit_pos = id;
-        config_.blocks[id].lru = 0;
-      }
-      else if (valid && tag != findtag)
-        config_.blocks[id].lru++;
-    }
-
+    hit_pos = CheckHit(tag, set);
     //miss
-    if (!hit) {
-      //printf("miss!\n");
+    if (hit_pos == -1) {
       stats_.miss_num++;
-      int max = -1;
-      bool full = true;
-      for (int i = 0; i < config_.associativity; i++) {
-        int id = set * config_.associativity + i;
-        if (config_.blocks[id].valid) {
-          if (config_.blocks[id].lru > max) {
-            max = config_.blocks[id].lru;
-            replace_pos = id;
-          }
-        }
-        else {
-          replace_pos = id;
-          full = false;
-          break;
-        }
+      replace_pos = CheckFull(set);
+      if (replace_pos == -1) {
+        //get replace pos
+        replace_pos = FindPos(set);
       }
-      if (full)
-        stats_.replace_num ++;
     }
     //hit
     else {
-      //printf("hit!\n");
       if (!read) {
         memcpy(config_.blocks[hit_pos].data + off, content, bytes);
         //write through
         if (config_.write_through) {
           int lhit, ltime;
-          //printf("write through 0x%lx\n", addr);
           lower_->HandleRequest(addr, bytes, 0, content, lhit, ltime);
           stats_.access_time += latency_.bus_latency;
           time += latency_.bus_latency + ltime;
@@ -82,20 +50,45 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
         }
       }
       else {
-        //printf("write!\n");
-        //printf("hitpos:%d\n", hit_pos);
         memcpy(content, config_.blocks[hit_pos].data + off, bytes);
-        //printf("write successful!\n");
         return;
       }
     }
-
-
   }
   // Prefetch?
   if (PrefetchDecision()) {
-    PrefetchAlgorithm();
-  } else {
+    unsigned startaddr = addr - off;
+    for (int i = 1; i <= config_.prefetch; i++) {
+      unsigned blockaddr = startaddr + i * config_.blocksize;
+      char tmp[256];
+      int tmphit;
+      int tmptime;
+      int tmp_hitpos = -1;
+      int tmp_placepos = -1;
+      unsigned btag = (blockaddr >> (b_bits + s_bits)) & ((1 << t_bits) - 1);
+      unsigned bset = (blockaddr >> b_bits) & ((1 << s_bits) - 1);
+      tmp_hitpos = CheckHit(bset, btag);
+      if (tmp_hitpos != -1)
+        continue;
+      else {
+        tmp_placepos = CheckFull(bset);
+        if (tmp_placepos == -1)
+          tmp_placepos = FindPos(bset);
+      }
+      lower_->HandleRequest(blockaddr, config_.blocksize, 1, tmp, tmphit, tmptime);
+      CacheBlock &rblock = config_.blocks[tmp_placepos];
+      if (rblock.valid && rblock.dirty) {
+        unsigned rep_addr = (rblock.tag << (32 - t_bits)) + (bset << b_bits);
+        lower_->HandleRequest(rep_addr, config_.blocksize, 0, rblock.data, tmphit, tmptime);
+      }
+      rblock.valid = true;
+      rblock.lru = 0;
+      rblock.dirty = false;
+      rblock.tag = btag;
+      memcpy(rblock.data, tmp, config_.blocksize);
+    }
+    
+  }
     int lower_hit, lower_time;
     if (read) {
       // Fetch from lower layer, already miss
@@ -155,8 +148,6 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
         stats_.access_time += latency_.bus_latency;
       }
     }
-  }
-
 }
 
 int Cache::BypassDecision() {
@@ -175,9 +166,63 @@ void Cache::ReplaceAlgorithm(){
 }
 
 int Cache::PrefetchDecision() {
-  return false;
+  return config_.prefetch;
 }
 
 void Cache::PrefetchAlgorithm() {
+}
+
+int Cache::CheckHit(unsigned set, unsigned tag)
+{
+  int hit_pos = -1;
+  for (int i = 0; i < config_.associativity; i++) {
+      int id = set * config_.associativity + i;
+      if (config_.blocks[id].valid && tag == config_.blocks[id].tag) {
+        hit_pos = id;
+        config_.blocks[id].lru = 0;
+      }
+      else if (config_.blocks[id].valid && tag !=  config_.blocks[id].tag)
+        config_.blocks[id].lru++;
+  }
+  return hit_pos;
+}
+
+int Cache::CheckFull(unsigned set)
+{
+  int replace_pos = -1;
+  for (int i = 0; i < config_.associativity; i++) {
+        int id = set * config_.associativity + i;
+        if (!config_.blocks[id].valid) {
+          replace_pos = id;
+          break;
+      }
+  }
+  return replace_pos;
+}
+
+int Cache::FindPos(unsigned set)
+{
+    int replace_pos;
+    stats_.replace_num ++;
+    // if FIFO
+    if (config_.replace_strategy) {
+      for (int i = 0; i < config_.associativity - 1; i++) {
+        int id = set * config_.associativity + i;
+        config_.blocks[id] = config_.blocks[id + 1];
+      }
+      replace_pos = (set + 1) * config_.associativity - 1;
+    }
+    // if LRU
+    else {
+      int max = -1;
+      for (int i = 0; i < config_.associativity; i++) {
+        int id = set * config_.associativity + i;
+        if (config_.blocks[id].lru > max) {
+          max = config_.blocks[id].lru;
+          replace_pos = id;
+        }
+      }
+    }
+  return replace_pos;
 }
 

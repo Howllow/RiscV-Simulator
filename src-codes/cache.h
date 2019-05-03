@@ -22,15 +22,17 @@ struct CacheBlock {
 class CacheConfig {
   public:
     int blocksize;
+    int replace_strategy;
     int capacity;
     int associativity;
     int blocknum;
+    int prefetch;
     int set_num; // Number of cache sets
     int write_through; // 0|1 for back|through
     int write_allocate; // 0|1 for no-alc|alc
     CacheBlock* blocks;
     CacheConfig() {}
-    CacheConfig(CacheBlock* b, int blocksize, int assoc, int capacity, int writet, int writea) {
+    CacheConfig(CacheBlock* b, int blocksize, int assoc, int capacity, int writet, int writea, int stra=0, int prefetch = 0) {
       this->blocksize = blocksize;
       blocks = b;
       associativity = assoc;
@@ -39,6 +41,8 @@ class CacheConfig {
       this->blocknum = this->set_num * assoc;
       write_allocate = writea;
       write_through = writet;
+      replace_strategy = stra;
+      this->prefetch = prefetch;
     }
 };
 
@@ -67,7 +71,9 @@ class Cache: public Storage {
   // Prefetching
   int PrefetchDecision();
   void PrefetchAlgorithm();
-
+  int CheckHit(unsigned set, unsigned tag);
+  int CheckFull(unsigned set);
+  int FindPos(unsigned set);
   CacheConfig config_;
   Storage *lower_;
   DISALLOW_COPY_AND_ASSIGN(Cache);
