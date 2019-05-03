@@ -104,12 +104,11 @@ void Memory::HandleRequest(uint32_t addr, int bytes, int read, char* content, in
         uint32_t first_id = GET_FPN(addr);
         uint32_t second_id = GET_SPN(addr);
         uint32_t offset = GET_OFF(addr);
-        memcpy(content, &mem[first_id][second_id][offset], bytes);
-        /*for (int i = 0; i < bytes; i++) {
+        for (int i = 0; i < bytes; i++) {
             if (!check_Page(addr + i))
                 get_Page(addr + i);
-            *(content + i) = getB(addr + i);
-        }*/
+        }
+        memcpy(content, &mem[first_id][second_id][offset], bytes);
     }
         
     else {

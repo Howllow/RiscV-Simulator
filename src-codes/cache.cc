@@ -23,7 +23,7 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
   int replace_pos = -1; 
 
   //get data or store data
-  hit_pos = CheckHit(tag, set);
+  hit_pos = CheckHit(set, tag);
   //miss
   if (hit_pos == -1) {
     stats_.miss_num++;
@@ -197,11 +197,13 @@ int Cache::CheckHit(unsigned set, unsigned tag)
   int hit_pos = -1;
   for (int i = 0; i < config_.associativity; i++) {
       int id = set * config_.associativity + i;
-      if (config_.blocks[id].valid && tag == config_.blocks[id].tag) {
+      bool valid = config_.blocks[id].valid;
+      unsigned findtag = config_.blocks[id].tag;
+      if (valid && tag == findtag) {
         hit_pos = id;
         config_.blocks[id].lru = 0;
       }
-      else if (config_.blocks[id].valid && tag !=  config_.blocks[id].tag)
+      else if (valid && tag !=  findtag)
         config_.blocks[id].lru++;
   }
   return hit_pos;

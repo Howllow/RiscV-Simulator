@@ -114,7 +114,6 @@ void simulateCache(char* cachefile, int bsz, int ass, int csz, int wt, int wa, o
 
     memset(blocks, 0, sizeof(blocks));
     float missrate = ((float)c.stats_.miss_num) / c.stats_.access_counter;
-    printf("miss successful!\n");
     csv << csz << "," << bsz << "," << ass << "," <<
     wt << "," << wa << "," << missrate << "," << totaltime 
     << endl;
@@ -123,45 +122,64 @@ void simulateCache(char* cachefile, int bsz, int ass, int csz, int wt, int wa, o
 
 void OptimizeCache(char* cachefile)
 {
-    Cache l1;
-    Cache l2;
-    CacheBlock l1b[512];
-    CacheBlock l2b[512 * 8];
     Memory m;
-    CacheConfig l1c = CacheConfig(l1b, 64, 8, 32 * 1024, 0, 1);
-    CacheConfig l2c = CacheConfig(l2b, 64, 8, 256 * 1024, 0, 1);
-    StorageStats s;
-    l1.SetStats(s);
-    l2.SetStats(s);
+    StorageLatency l1la;
+    StorageLatency l2la;
+    StorageLatency mla;
+    l1la.bus_latency = 0;
+    l2la.bus_latency = 12;
+    l1la.hit_latency = 3;
+    l2la.hit_latency = 4;
+    mla.hit_latency = 75;
+    mla.bus_latency = 0;
+    l1.SetLatency(l1la);
+    l2.SetLatency(l2la);
+    m.SetLatency(mla);
     l1.SetLower(&l2);
     l2.SetLower(&m);
-    ifstream file(cachefile);
-    if (!file.is_open()) {
-        printf("openfile error!\n");
-        exit(-1);
-    }
     char rw;
     unsigned addr;
     int time;
     int hit;
-    char tmp[256];
-    while(file >> rw >> hex >> addr) {
-        switch(rw)
-        {
-            case 'r':
-            l1.HandleRequest(addr, 1, 1, tmp, hit, time);
-            break;
-            case 'w':
-            l1.HandleRequest(addr, 1, 0, tmp, hit, time);
-            break;
-            default:
-            break;
+    char tmp[256] = {0};
+    for (int prel1 = 0; prel1 < 5; prel1++)
+        for (int prel2 = 0; prel2 < 5; prel2++) {
+        CacheConfig l1c = CacheConfig(l1blocks, 64, 8, 32 * 1024, 0, 1, 0, prel1);
+        CacheConfig l2c = CacheConfig(l2blocks, 64, 8, 256 * 1024, 0, 1, 1, prel2);
+        StorageStats s;
+        l1.SetStats(s);
+        l2.SetStats(s);
+        l1.SetConfig(l1c);
+        l2.SetConfig(l2c);
+        ifstream file(cachefile);
+        if (!file.is_open()) {
+            printf("openfile error!\n");
+            exit(-1);
         }
+        while(file >> rw >> hex >> addr) {
+            switch(rw)
+            {
+                case 'r':
+                l1.HandleRequest(addr, 1, 1, tmp, hit, time);
+                break;
+                case 'w':
+                l1.HandleRequest(addr, 1, 0, tmp, hit, time);
+                break;
+                default:
+                break;
+            }
+        }
+        float missrate1 = ((float)l1.stats_.miss_num) / l1.stats_.access_counter;
+        float missrate2 = ((float)l2.stats_.miss_num) / l2.stats_.access_counter;
+        float amat = 7.5 * (1 - missrate1) + 9.5 * missrate1 * (1 - missrate2) + 59.5 * missrate1 * missrate2;
+        cout << "------L1 prefetch:" << prel1 << " Blocks, L2 prefetch:" << prel2 <<" Blocks------"
+        << endl;
+        cout << "L1 missrate:" << missrate1 << endl;
+        cout << "L2 missrate:" << missrate2 << endl;
+        cout << "AMAT:"<<amat << endl;
+        memset(l1blocks, 0, sizeof(l1blocks));
+        memset(l2blocks, 0, sizeof(l2blocks));
     }
-    float missrate1 = ((float)l1.stats_.miss_num) / l1.stats_.access_counter;
-    float missrate2 = ((float)l2.stats_.miss_num) / l2.stats_.access_counter;
-    cout << "L1 missrate:" << missrate1 << endl;
-    cout << "L2 missrate:" << missrate2 << endl;
 }
 void CacheTest(char* cachefile, int testnum) 
 {
@@ -192,6 +210,7 @@ void CacheTest(char* cachefile, int testnum)
         break;
         case 2:
         OptimizeCache(cachefile);
+        break;
         default:
         exit(-1);
     }
