@@ -25,7 +25,6 @@ class Memory: public Storage {
   void HandleRequest(uint32_t addr, int bytes, int read,
                      char *content, int &hit, int &time);
   Storage* GetLower(){return NULL;}
-  Storage *lower_;
  private:
   // Memory implement
 

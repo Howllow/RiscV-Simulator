@@ -13,7 +13,7 @@
 typedef struct StorageStats_ {
   int access_counter;
   int miss_num;
-  int access_time; // In nanoseconds
+  long long access_time; // In nanoseconds
   int replace_num; // Evict old lines
   int fetch_num; // Fetch lower layer
   int prefetch_num; // Prefetch
@@ -46,6 +46,7 @@ class Storage {
   // [out] time: total access time
   virtual void HandleRequest(uint32_t addr, int bytes, int read,
                              char* content, int &hit, int &time) = 0;
+  virtual Storage* GetLower()=0;
   StorageStats stats_;
   StorageLatency latency_;
 };

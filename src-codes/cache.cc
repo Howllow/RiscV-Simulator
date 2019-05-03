@@ -1,7 +1,7 @@
 #include "cache.h"
 #include "math.h"
-#include <cstdlib>
-#include <ctime>
+#include <stdlib.h>
+#include <time.h>
 
 void Cache::SetConfig(CacheConfig cc) {
   config_ = cc;
@@ -26,13 +26,12 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
   //miss
   if (hit_pos == -1) {
     stats_.miss_num++;
-    if (BypassDecision) {
+    if (BypassDecision()) {
       Storage* m = this;
       //find memory
-      while(m->lower_ != NULL) {
-        m = m->lower_;
+      while(m->GetLower() != NULL) {
+        m = m->GetLower();
       }
-      time += latency_.bus_latency + 25;
       //read bypassing the cache
       if (read) {
         m->HandleRequest(addr, bytes, 1, content, hit, time);
@@ -42,12 +41,12 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
       }
       return;
     }
+    time += latency_.bus_latency + latency_.hit_latency;
     replace_pos = CheckFull(set);
     if (replace_pos == -1) {
       //get replace pos
       replace_pos = FindPos(set);
     }
-    time += latency_.bus_latency + latency_.hit_latency;
   }
   //hit
   else {
@@ -168,10 +167,10 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
 }
 
 int Cache::BypassDecision() {
-  srand((unsigned)time(NULL));
-  unsigned r = rand() % 100;
-  if (r < config_.bypass_possi)  
+  int r = rand() % 101;
+  if (r < config_.bypass_possi)  {
     return true;
+  }
   else return false;
 }
 
