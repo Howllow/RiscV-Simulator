@@ -30,9 +30,11 @@ class CacheConfig {
     int set_num; // Number of cache sets
     int write_through; // 0|1 for back|through
     int write_allocate; // 0|1 for no-alc|alc
+    int bypass_possi;
     CacheBlock* blocks;
     CacheConfig() {}
-    CacheConfig(CacheBlock* b, int blocksize, int assoc, int capacity, int writet, int writea, int stra=0, int prefetch = 0) {
+    CacheConfig(CacheBlock* b, int blocksize, int assoc, int capacity, int writet, int writea, 
+      int stra = 0, int prefetch = 0, int bypass = 0) {
       this->blocksize = blocksize;
       blocks = b;
       associativity = assoc;
@@ -42,6 +44,7 @@ class CacheConfig {
       write_allocate = writea;
       write_through = writet;
       replace_strategy = stra;
+      bypass_possi = bypass;
       this->prefetch = prefetch;
     }
 };
@@ -51,14 +54,16 @@ class Cache: public Storage {
  public:
   Cache() {}
   ~Cache() {}
-
+  
   // Sets & Gets
   void SetConfig(CacheConfig cc);
   void GetConfig(CacheConfig cc);
   void SetLower(Storage *ll) { lower_ = ll; }
+  Storage* GetLower() {return lower_;}
   // Main access process
   void HandleRequest(uint32_t addr, int bytes, int read,
                      char *content, int &hit, int &time);
+  Storage *lower_;
 
  private:
   // Bypassing
@@ -75,7 +80,6 @@ class Cache: public Storage {
   int CheckFull(unsigned set);
   int FindPos(unsigned set);
   CacheConfig config_;
-  Storage *lower_;
   DISALLOW_COPY_AND_ASSIGN(Cache);
 };
 

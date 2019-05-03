@@ -18,13 +18,14 @@ uint8_t getB(uint32_t addr);
 
 class Memory: public Storage {
  public:
-  Memory() {}
+  Memory() {lower_ = NULL;}
   ~Memory() {}
 
   // Main access process
   void HandleRequest(uint32_t addr, int bytes, int read,
                      char *content, int &hit, int &time);
-
+  Storage* GetLower(){return NULL;}
+  Storage *lower_;
  private:
   // Memory implement
 

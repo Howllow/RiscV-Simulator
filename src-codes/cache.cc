@@ -1,5 +1,7 @@
 #include "cache.h"
 #include "math.h"
+#include <cstdlib>
+#include <ctime>
 
 void Cache::SetConfig(CacheConfig cc) {
   config_ = cc;
@@ -21,38 +23,52 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
   int replace_pos = -1; 
 
   //get data or store data
-  if (!BypassDecision()) {
-    hit_pos = CheckHit(tag, set);
-    //miss
-    if (hit_pos == -1) {
-      stats_.miss_num++;
-      replace_pos = CheckFull(set);
-      if (replace_pos == -1) {
-        //get replace pos
-        replace_pos = FindPos(set);
+  hit_pos = CheckHit(tag, set);
+  //miss
+  if (hit_pos == -1) {
+    stats_.miss_num++;
+    if (BypassDecision) {
+      Storage* m = this;
+      //find memory
+      while(m->lower_ != NULL) {
+        m = m->lower_;
       }
-    }
-    //hit
-    else {
-      if (!read) {
-        memcpy(config_.blocks[hit_pos].data + off, content, bytes);
-        //write through
-        if (config_.write_through) {
-          int lhit, ltime;
-          lower_->HandleRequest(addr, bytes, 0, content, lhit, ltime);
-          stats_.access_time += latency_.bus_latency;
-          time += latency_.bus_latency + ltime;
-          return;
-        }
-        //write back
-        else {
-          config_.blocks[hit_pos].dirty = true;
-        }
+      time += latency_.bus_latency + 25;
+      //read bypassing the cache
+      if (read) {
+        m->HandleRequest(addr, bytes, 1, content, hit, time);
       }
       else {
-        memcpy(content, config_.blocks[hit_pos].data + off, bytes);
+        m->HandleRequest(addr, bytes, 0, content, hit, time);
+      }
+      return;
+    }
+    replace_pos = CheckFull(set);
+    if (replace_pos == -1) {
+      //get replace pos
+      replace_pos = FindPos(set);
+    }
+  }
+  //hit
+  else {
+    if (!read) {
+      memcpy(config_.blocks[hit_pos].data + off, content, bytes);
+      //write through
+      if (config_.write_through) {
+        int lhit, ltime;
+        lower_->HandleRequest(addr, bytes, 0, content, lhit, ltime);
+        stats_.access_time += latency_.bus_latency;
+        time += latency_.bus_latency + ltime;
         return;
       }
+      //write back
+      else {
+        config_.blocks[hit_pos].dirty = true;
+      }
+    }
+    else {
+      memcpy(content, config_.blocks[hit_pos].data + off, bytes);
+      return;
     }
   }
   // Prefetch?
@@ -151,7 +167,11 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
 }
 
 int Cache::BypassDecision() {
-  return false;
+  srand((unsigned)time(NULL));
+  unsigned r = rand() % 100;
+  if (r < config_.bypass_possi)  
+    return true;
+  else return false;
 }
 
 void Cache::PartitionAlgorithm() {

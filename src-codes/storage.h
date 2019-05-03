@@ -35,6 +35,7 @@ class Storage {
   void GetStats(StorageStats &ss) { ss = stats_; }
   void SetLatency(StorageLatency sl) { latency_ = sl; }
   void GetLatency(StorageLatency &sl) { sl = latency_; }
+  Storage *lower_;
 
   // Main access process
   // [in]  addr: access address
