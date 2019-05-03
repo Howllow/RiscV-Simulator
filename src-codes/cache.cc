@@ -10,7 +10,6 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
                           char* content, int &hit, int &time) {
   hit = 0;
   time = 0;
-  time += latency_.bus_latency + latency_.hit_latency;
   stats_.access_time += time;
   stats_.access_counter += 1;
   unsigned b_bits = (int)log2(config_.blocksize);
@@ -48,9 +47,11 @@ void Cache::HandleRequest(uint32_t addr, int bytes, int read,
       //get replace pos
       replace_pos = FindPos(set);
     }
+    time += latency_.bus_latency + latency_.hit_latency;
   }
   //hit
   else {
+    time += latency_.bus_latency + latency_.hit_latency;
     if (!read) {
       memcpy(config_.blocks[hit_pos].data + off, content, bytes);
       //write through
