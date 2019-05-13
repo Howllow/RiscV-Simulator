@@ -91,7 +91,7 @@ void sseYuv(char* yuv)
 				RGB = _mm_srl_epi32(RGB, eight); // div 256
 				int R = _mm_cvtsi128_si64(RGB) & 0x00000000;
 				int G = int(_mm_cvtsi128_si64(RGB) >> 32);
-				int B = _mm_cvtsi128_si32(_mm_shuffle_epi32(RGB, 0x36));
+				int B = _mm_cvtsi128_si64(_mm_shuffle_epi32(RGB, 0x36)) & 0x00000000;
 				__m128i RG = _mm_set_epi16(0, 0, G, R, G, R, G, R);
 				__m128i B1 = _mm_set_epi16(0, 0, 0, B, 0, B, 0, B);
 				op = _mm_set_epi16(0, 0, -94, 112, -74, -38, 129, 66);
@@ -103,7 +103,7 @@ void sseYuv(char* yuv)
 				newyuv = _mm_add_epi32(newyuv, op);
 				output[cnt][index] = (char)(_mm_cvtsi128_si64(newyuv) & 0x00000000);
 				output[cnt][uindex] = (char)(_mm_cvtsi128_si64(newyuv) >> 32);
-				output[cnt][vindex] = (char)(_mm_cvtsi128_si32(_mm_shuffle_epi32(newyuv, 0x36)));
+				output[cnt][vindex] = (char)(_mm_cvtsi128_si64(_mm_shuffle_epi32(newyuv, 0x36)) & 0x00000000);
 	        }
 	        cnt++;
 	    }
