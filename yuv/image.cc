@@ -2,11 +2,13 @@
 #include <iostream>
 #include <cstring>
 #include <cstdint>
+#include <ctime>
+#include <emmintrin.h>
+#include <mmintrin.h>
 using namespace std;
 
 #define width 1920
 #define height 1080
-
 int length;
 char *output[85];
 int cnt;
@@ -25,12 +27,15 @@ char* readImage(const char* path)
 
 void fdealYuv(char* yuv)
 {
+	double timecnt;
+	clock_t start, end;
+	start = clock();
 	for (int alpha = 1; alpha < 255; alpha = alpha + 3) {
 	    for (int i = 0; i < width; i ++)
 	        for (int j = 0; j < height; j ++) {
 	            int index = i + j * width;
-	            int uindex = width * height + (i / 2) + (j / 2) * (width / 2);
-	            int vindex = uindex + (width * height) / 4;
+	            int uindex = width * height + (i >> 1) + (j >> 1) * (width >> 1);
+	            int vindex = uindex + ((width * height) >> 2);
 	            int y = (uint8_t)yuv[index];
 	            int u = (uint8_t)yuv[uindex];
 	            int v = (uint8_t)yuv[vindex];
@@ -49,6 +54,95 @@ void fdealYuv(char* yuv)
 	        }
 	        cnt++;
 	    }
+	end = clock();
+	timecnt = (double)(end - start);
+	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl; 
+}
+
+void sseYuv(char* yuv)
+{
+	double timecnt;
+	clock_t start, end;
+	start = clock();
+		for (int alpha = 1; alpha < 255; alpha = alpha + 3) {
+	    for (int i = 0; i < width; i ++)
+	        for (int j = 0; j < height; j ++) {
+	            int index = i + j * width;
+	            int uindex = width * height + (i >> 1) + (j >> 1) * (width >> 1);
+	            int vindex = uindex + ((width * height) >> 2);
+				short y = (uint8_t)yuv[index];
+				short u = (uint8_t)yuv[uindex];
+				short v = (uint8_t)yuv[vindex];
+				__m128i part1 = _mm_set_epi16(0, 0, u, y, u, y, u, y);
+				__m128i op = _mm_set_epi16(0, 0, 128, 16, 128, 16, 128, 16);
+				__m128i eight = _mm_set_epi64x(0, 8);
+				part1 = _mm_sub_epi16(part1, op);
+				op = _mm_set_epi16(0, 0, 519, 298, -101, 298, 0, 298);
+				part1 = _mm_madd_epi16(part1, op);
+				__m128i part2 = _mm_set_epi16(0, 0, 1, v, 1, v, 1, v);
+				op = _mm_set_epi16(0, 0, 0, 128, 0, 128, 0, 128);
+				part2 = _mm_sub_epi16(part2, op);
+				op = _mm_set_epi16(0, 0, 83, 0, -429, -211, 32, 411);
+				part2 = _mm_madd_epi16(part2, op);
+				__m128i RGB = _mm_add_epi32(part1, part2);
+				RGB = _mm_srl_epi32(RGB, eight); // get RGB
+				op = _mm_set_epi32(0, alpha, alpha ,alpha);
+				RGB = _mm_madd_epi16(op, RGB); // mul alpha
+				RGB = _mm_srl_epi32(RGB, eight); // div 256
+				int R = _mm_cvtsi128_si64(RGB) & 0x00000000;
+				int G = int(_mm_cvtsi128_si64(RGB) >> 32);
+				int B = _mm_cvtsi128_si32(_mm_shuffle_epi32(RGB, 0x36));
+				__m128i RG = _mm_set_epi16(0, 0, G, R, G, R, G, R);
+				__m128i B1 = _mm_set_epi16(0, 0, 0, B, 0, B, 0, B);
+				op = _mm_set_epi16(0, 0, -94, 112, -74, -38, 129, 66);
+				RG = _mm_madd_epi16(RG, op);
+				op = _mm_set_epi16(0, 0, 0, -18, 0, 112, 0, 25);
+				B1 = _mm_madd_epi16(B1, op);
+				op = _mm_set_epi32(0, 128, 128, 16);
+				__m128i newyuv = _mm_srl_epi32(_mm_add_epi32(RG, B1), eight);
+				newyuv = _mm_add_epi32(newyuv, op);
+				output[cnt][index] = (char)(_mm_cvtsi128_si64(newyuv) & 0x00000000);
+				output[cnt][uindex] = (char)(_mm_cvtsi128_si64(newyuv) >> 32);
+				output[cnt][vindex] = (char)(_mm_cvtsi128_si32(_mm_shuffle_epi32(newyuv, 0x36)));
+	        }
+	        cnt++;
+	    }
+		end = clock();
+		timecnt = (double)(end - start);
+		cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl; 
+}
+void idealYuv(char* yuv)
+{
+	double timecnt;
+	clock_t start, end;
+	start = clock();
+	for (int alpha = 1; alpha < 255; alpha = alpha + 3) {
+	    for (int i = 0; i < width; i ++)
+	        for (int j = 0; j < height; j ++) {
+	            int index = i + j * width;
+	            int uindex = width * height + (i >> 1) + (j >> 1) * (width >> 1);
+	            int vindex = uindex + ((width * height) >> 2);
+	            int y = (uint8_t)yuv[index];
+	            int u = (uint8_t)yuv[uindex];
+	            int v = (uint8_t)yuv[vindex];
+	            int R = (298 * (y - 16) + 411 * (v - 128) + 32) >> 8;
+	            R = alpha * R / 255;
+	            int B = (298 * (y - 16) + 519 * (u - 128) + 83) >> 8;
+	            B = alpha * B / 255;
+	            int G = (298 * (y - 16) - 101 * (u - 128) - 211 * (v - 128)  - 429) >> 8;
+	            G = alpha * G / 255;
+	            int newy = ((66 * R + 129 * G + 25 * B ) >> 8) + 16;
+	        	int newu = ((-38 * R - 74 * G + 112 * B) >> 8) + 128;
+	            int newv = ((112 * R - 94 * G - 18 * B) >> 8) + 128;
+	            output[cnt][index] = (char)newy;
+	            output[cnt][uindex] = (char)newu;
+	            output[cnt][vindex] = (char)newv;
+	        }
+	        cnt++;
+	    }
+	end = clock();
+	timecnt = (double)(end - start);
+	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl; 
 }
 
 int main(int argc, char** argv)
@@ -82,14 +176,19 @@ int main(int argc, char** argv)
     	output[i] = new char[length];
     if (isa == "float")
     	fdealYuv(yuv);
-    
+	else if (isa == "int")
+		idealYuv(yuv);
+    else if (isa == "sse")
+		sseYuv(yuv);
     if (do_out) {
+		printf("doing output!\n");
 	    for (int i = 0; i < cnt; i++) {
 	    	ofstream os(string("./") + isa + filename + "/" + string("a") + to_string(i) + string(".yuv"));
 	        os.write(output[i], length);
 		}
 	}
-	delete output;
+	for (int i = 0; i < 85; i++)
+		delete output[i];
 	delete yuv;
     return 0;
 }
