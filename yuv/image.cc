@@ -91,9 +91,9 @@ void sseYuv(char* yuv)
 				op = _mm_set_epi32(0, alpha, alpha ,alpha);
 				RGB = _mm_madd_epi16(op, RGB); // mul alpha
 				RGB = _mm_srl_epi32(RGB, eight); // div 256
-				int R = _mm_cvtsi128_si64(RGB) & 0x00000000;
+				int R = int(_mm_cvtsi128_si64(RGB) & 0x00000000ffffffff);
 				int G = int(_mm_cvtsi128_si64(RGB) >> 32);
-				int B = _mm_cvtsi128_si64(_mm_shuffle_epi32(RGB, 0x36)) & 0x00000000;
+				int B = int(_mm_cvtsi128_si64(_mm_shuffle_epi32(RGB, 0x72)));
 				__m128i RG = _mm_set_epi16(0, 0, G, R, G, R, G, R);
 				__m128i B1 = _mm_set_epi16(0, 0, 0, B, 0, B, 0, B);
 				op = _mm_set_epi16(0, 0, -94, 112, -74, -38, 129, 66);
@@ -103,9 +103,9 @@ void sseYuv(char* yuv)
 				op = _mm_set_epi32(0, 128, 128, 16);
 				__m128i newyuv = _mm_srl_epi32(_mm_add_epi32(RG, B1), eight);
 				newyuv = _mm_add_epi32(newyuv, op);
-				output[cnt][index] = (char)(_mm_cvtsi128_si64(newyuv) & 0x00000000);
+				output[cnt][index] = (char)(_mm_cvtsi128_si64(newyuv) & 0x00000000ffffffff);
 				output[cnt][uindex] = (char)(_mm_cvtsi128_si64(newyuv) >> 32);
-				output[cnt][vindex] = (char)(_mm_cvtsi128_si64(_mm_shuffle_epi32(newyuv, 0x36)) & 0x00000000);
+				output[cnt][vindex] = (char)(_mm_cvtsi128_si64(_mm_shuffle_epi32(newyuv, 0x72)));
 	        }
 	        cnt++;
 	    }
@@ -130,13 +130,12 @@ void mmxYuv(char* yuv)
 				short v = (uint8_t)yuv[vindex];
 				__m64  part1 = _mm_set_pi16(v, u, y, 1);
 				__m64  op = _mm_set_pi16(128, 128, 16, 0);
-				__m64 eight = _mm_set_pi16(0, 0, 0, 8);
+				__m64 eight = _mm_set_pi32(0, 8);
 				part1 = _mm_sub_pi16(part1, op);
 				op = _mm_set_pi16(411, 0, 298, 32);
                 part1 = _mm_madd_pi16(part1, op);
-                int R = (int(_mm_cvtm64_si64(part1) >> 32) + int(_mm_cvtm64_si64(part1) & 0x00000000)) >> 8;
-                R *= alpha;
-                R /= 255;
+                int R = (int(_mm_cvtm64_si64(part1) >> 32) + int(_mm_cvtm64_si64(part1) & 0x00000000ffffffff)) >> 8;
+                R = R * alpha / 256;
                 part1 = _mm_set_pi16(y, u, y, u);
                 __m64 part2 = _mm_set_pi16(v, 1, v, 1);
                 op = _mm_set_pi16(16, 128, 16, 128);
@@ -145,24 +144,23 @@ void mmxYuv(char* yuv)
                 part2 = _mm_sub_pi16(part2, op);
                 op = _mm_set_pi16(298, -101, 298, 519);
                 part1 = _mm_madd_pi16(part1, op);
-                op = _mm_set_pi16(0, 83, -211, -429);
+                op = _mm_set_pi16(-211, -429, 0, 83);
                 part2 = _mm_madd_pi16(part2, op);
                 part1 = _mm_add_pi32(part1, part2);
                 part1 = _mm_srl_pi32(part1, eight);
                 op = _mm_set_pi32(alpha, alpha);
                 part1 = _mm_madd_pi16(op, part1);
                 part1 = _mm_srl_pi32(part1, eight);
-                int B = int((_mm_cvtm64_si64(part1)) >> 32);
-                int G = int(_mm_cvtm64_si64(part1)) & 0x00000000;
-
+                int G = int((_mm_cvtm64_si64(part1)) >> 32);
+                int B = int(_mm_cvtm64_si64(part1) & 0x00000000ffffffff);
                 part1 = _mm_set_pi16(0, R, G, B);
                 op = _mm_set_pi16(0, 66, 129, 25);
                 part1 = _mm_madd_pi16(part1, op);
-                int newy = (int(_mm_cvtm64_si64(part1) >> 32) + int(_mm_cvtm64_si64(part1) & 0x00000000)) >> 8;
+                int newy = (int(_mm_cvtm64_si64(part1) >> 32) + int(_mm_cvtm64_si64(part1) & 0x00000000ffffffff)) >> 8;
                 newy += 16;
                 part1 = _mm_set_pi16(R, G, R, G);
                 part2 = _mm_set_pi32(B, B);
-                op = _mm_set_pi16(-32, -74, 112, -94);
+                op = _mm_set_pi16(-38, -74, 112, -94);
                 part1 = _mm_madd_pi16(part1, op);
                 op = _mm_set_pi32(112, -18);
                 part2 = _mm_madd_pi16(part2, op);
@@ -171,7 +169,7 @@ void mmxYuv(char* yuv)
                 op = _mm_set_pi32(128, 128);
                 part1 = _mm_add_pi32(part1, op);
                 int newu = int(_mm_cvtm64_si64(part1) >> 32);
-                int newv = int(_mm_cvtm64_si64(part1)) & 0x00000000;
+                int newv = int(_mm_cvtm64_si64(part1) & 0x00000000ffffffff);
 
                 output[cnt][index] = (char)newy;
 	            output[cnt][uindex] = (char)newu;
