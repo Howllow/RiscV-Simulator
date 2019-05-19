@@ -1,10 +1,12 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
+#include <string>
 #include <cstdint>
 #include <ctime>
-#include <emmintrin.h>
 #include <mmintrin.h>
+#include <emmintrin.h>
+
 using namespace std;
 
 #define width 1920
@@ -56,7 +58,7 @@ void fdealYuv(char* yuv)
 	    }
 	end = clock();
 	timecnt = (double)(end - start);
-	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl; 
+	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl;
 }
 
 void sseYuv(char* yuv)
@@ -109,8 +111,79 @@ void sseYuv(char* yuv)
 	    }
 		end = clock();
 		timecnt = (double)(end - start);
-		cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl; 
+		cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl;
 }
+
+void mmxYuv(char* yuv)
+{
+	double timecnt;
+	clock_t start, end;
+	start = clock();
+	for (int alpha = 1; alpha < 255; alpha = alpha + 3) {
+	    for (int i = 0; i < width; i ++)
+	        for (int j = 0; j < height; j ++) {
+	            int index = i + j * width;
+	            int uindex = width * height + (i >> 1) + (j >> 1) * (width >> 1);
+	            int vindex = uindex + ((width * height) >> 2);
+				short y = (uint8_t)yuv[index];
+				short u = (uint8_t)yuv[uindex];
+				short v = (uint8_t)yuv[vindex];
+				__m64  part1 = _mm_set_pi16(v, u, y, 1);
+				__m64  op = _mm_set_pi16(128, 128, 16, 0);
+				__m64 eight = _mm_set_pi16(0, 0, 0, 8);
+				part1 = _mm_sub_pi16(part1, op);
+				op = _mm_set_pi16(411, 0, 298, 32);
+                part1 = _mm_madd_pi16(part1, op);
+                int R = (int(_mm_cvtm64_si64(part1) >> 32) + int(_mm_cvtm64_si64(part1) & 0x00000000)) >> 8;
+                R *= alpha;
+                R /= 255;
+                part1 = _mm_set_pi16(y, u, y, u);
+                __m64 part2 = _mm_set_pi16(v, 1, v, 1);
+                op = _mm_set_pi16(16, 128, 16, 128);
+                part1 = _mm_sub_pi16(part1, op);
+                op = _mm_set_pi16(128, 0, 128, 0);
+                part2 = _mm_sub_pi16(part2, op);
+                op = _mm_set_pi16(298, -101, 298, 519);
+                part1 = _mm_madd_pi16(part1, op);
+                op = _mm_set_pi16(0, 83, -211, -429);
+                part2 = _mm_madd_pi16(part2, op);
+                part1 = _mm_add_pi32(part1, part2);
+                part1 = _mm_srl_pi32(part1, eight);
+                op = _mm_set_pi32(alpha, alpha);
+                part1 = _mm_madd_pi16(op, part1);
+                part1 = _mm_srl_pi32(part1, eight);
+                int B = int((_mm_cvtm64_si64(part1)) >> 32);
+                int G = int(_mm_cvtm64_si64(part1)) & 0x00000000;
+
+                part1 = _mm_set_pi16(0, R, G, B);
+                op = _mm_set_pi16(0, 66, 129, 25);
+                part1 = _mm_madd_pi16(part1, op);
+                int newy = (int(_mm_cvtm64_si64(part1) >> 32) + int(_mm_cvtm64_si64(part1) & 0x00000000)) >> 8;
+                newy += 16;
+                part1 = _mm_set_pi16(R, G, R, G);
+                part2 = _mm_set_pi32(B, B);
+                op = _mm_set_pi16(-32, -74, 112, -94);
+                part1 = _mm_madd_pi16(part1, op);
+                op = _mm_set_pi32(112, -18);
+                part2 = _mm_madd_pi16(part2, op);
+                part1 = _mm_add_pi32(part1, part2);
+                part1 = _mm_srl_pi32(part1, eight);
+                op = _mm_set_pi32(128, 128);
+                part1 = _mm_add_pi32(part1, op);
+                int newu = int(_mm_cvtm64_si64(part1) >> 32);
+                int newv = int(_mm_cvtm64_si64(part1)) & 0x00000000;
+
+                output[cnt][index] = (char)newy;
+	            output[cnt][uindex] = (char)newu;
+	            output[cnt][vindex] = (char)newv;
+	        }
+	        cnt++;
+	    }
+	end = clock();
+	timecnt = (double)(end - start);
+	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl;
+}
+
 void idealYuv(char* yuv)
 {
 	double timecnt;
@@ -142,14 +215,14 @@ void idealYuv(char* yuv)
 	    }
 	end = clock();
 	timecnt = (double)(end - start);
-	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl; 
+	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl;
 }
 
 int main(int argc, char** argv)
 {
 	bool do_out = false;
 	string isa;
-	
+
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			switch(argv[i][1])
@@ -165,7 +238,7 @@ int main(int argc, char** argv)
 			}
 		}
 	}
-	
+
     char* yuv;
     cnt = 0;
     int x = 0;
@@ -180,6 +253,8 @@ int main(int argc, char** argv)
 		idealYuv(yuv);
     else if (isa == "sse")
 		sseYuv(yuv);
+    else if (isa == "mmx")
+        mmxYuv(yuv);
     if (do_out) {
 		printf("doing output!\n");
 	    for (int i = 0; i < cnt; i++) {
