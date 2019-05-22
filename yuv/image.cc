@@ -4,9 +4,8 @@
 #include <string>
 #include <cstdint>
 #include <ctime>
-#include <mmintrin.h>
-#include <emmintrin.h>
-
+#include <nmmintrin.h>
+#include <immintrin.h>
 using namespace std;
 
 #define width 1920
@@ -184,6 +183,58 @@ void mmxYuv(char* yuv)
 	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl;
 }
 
+void avxYuv(char* yuv)
+{
+	double timecnt;
+	clock_t start, end;
+	start = clock();
+	for (int alpha = 1; alpha < 255; alpha = alpha + 3) {
+	    for (int i = 0; i < height; i ++)
+	        for (int j = 0; j < width; j += 2) {
+	            int index = j + i * width;
+	            int uindex = width * height + (j >> 1) + (i >> 1) * (width >> 1);
+	            int vindex = uindex + ((width * height) >> 2);
+				short y = (uint8_t)yuv[index];
+				short y1 = (uint8_t)yuv[index + 1];
+				short u = (uint8_t)yuv[uindex];
+				short v = (uint8_t)yuv[vindex];
+				__m256 max = _mm256_set_ps(255.0f, 255.0f, 255.0f, 255.0f, 255.0f, 255.0f, 255.0f, 255.0f);
+				__m256 min = _mm256_set_ps(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+				__m256 fyuv = _mm256_set_ps(0.0f, v, u, y1, 0.0f, v, u, y);
+				__m256 op = _mm256_set_ps(0.0f, 128.0f, 128.0f, 16.0f, 0.0f, 128.0f, 128.0f, 16.0f);
+				fyuv = _mm256_sub_ps(fyuv, op);
+				op = _mm256_set_ps(0.0f, 1.596027f, 0.0f, 1.164383f, 0.0f, 1.596027f, 0.0f, 1.164383f);
+				__m256 R = _mm256_dp_ps(fyuv, op, 0b11110001);
+				op = _mm256_set_ps(0.0f, -0.812968f, -0.391762f, 1.164383f, 0.0f, -0.812968f, -0.391762f, 1.164383f);
+				__m256 G = _mm256_dp_ps(fyuv, op, 0b11110010);
+				op = _mm256_set_ps(0.0f, 0.0f, 2.017232f, 1.164383f, 0.0f, 0.0f, 2.017232f, 1.164383f);
+				__m256 B = _mm256_dp_ps(fyuv, op, 0b11110100);
+				__m256 RGB = _mm256_min_ps(_mm256_max_ps(_mm256_add_ps(_mm256_add_ps(R, G), B), min), max);
+				op = _mm256_set_ps(0.0f, alpha, alpha, alpha, 0.0f, alpha, alpha, alpha);
+				op = _mm256_div_ps(op, max);
+				RGB = _mm256_mul_ps(RGB, op);
+				op = _mm256_set_ps(0.0f, 0.097906f, 0.504129f, 0.256788f, 0.0f, 0.097906f, 0.504129f, 0.256788f);
+				__m256 newy = _mm256_dp_ps(RGB, op, 0b11110001);
+				op = _mm256_set_ps(0.0f, 0.439126f, -0.290993f, -0.148223f, 0.0f, 0.439126f, -0.290993f, -0.148223f);
+				__m256 newu = _mm256_dp_ps(RGB, op, 0b11110010);
+				op = _mm256_set_ps(0.0f, -0.071427f, -0.367788f, 0.439216f, 0.0f, -0.071427f, -0.367788f, 0.439216f);
+				__m256 newv = _mm256_dp_ps(RGB, op, 0b11110100);
+				op = _mm256_set_ps(0.0f, 128.0f, 128.0f, 16.0f, 0.0f, 128.0f, 128.0f, 16.0f);
+				fyuv = _mm256_add_ps(_mm256_add_ps(newy, _mm256_add_ps(newu, newv)), op);
+				__m256i iyuv = _mm256_cvtps_epi32(fyuv);
+				output[cnt][index] = _mm256_extract_epi32(iyuv, 0);
+				output[cnt][uindex] = _mm256_extract_epi32(iyuv, 1);
+				output[cnt][vindex] = _mm256_extract_epi32(iyuv, 2);
+				output[cnt][index + 1] = _mm256_extract_epi32(iyuv, 3);	 
+				
+	        }
+	        cnt++;
+	    }
+	end = clock();
+	timecnt = (double)(end - start);
+	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl;
+}
+
 void idealYuv(char* yuv)
 {
 	double timecnt;
@@ -217,6 +268,7 @@ void idealYuv(char* yuv)
 	timecnt = (double)(end - start);
 	cout << "Processing Time:" << timecnt / CLOCKS_PER_SEC << "s" << endl;
 }
+ 
 
 int main(int argc, char** argv)
 {
@@ -255,6 +307,8 @@ int main(int argc, char** argv)
 		sseYuv(yuv);
     else if (isa == "mmx")
         mmxYuv(yuv);
+	else if (isa == "avx")
+		avxYuv(yuv);
     if (do_out) {
 		printf("doing output!\n");
 	    for (int i = 0; i < cnt; i++) {
