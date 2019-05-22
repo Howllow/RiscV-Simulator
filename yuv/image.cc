@@ -90,9 +90,12 @@ void sseYuv(char* yuv)
 				op = _mm_set_epi32(0, alpha, alpha ,alpha);
 				RGB = _mm_madd_epi16(op, RGB); // mul alpha
 				RGB = _mm_srl_epi32(RGB, eight); // div 256
-				int R = int(_mm_cvtsi128_si64(RGB) & 0x00000000ffffffff);
-				int G = int(_mm_cvtsi128_si64(RGB) >> 32);
-				int B = int(_mm_cvtsi128_si64(_mm_shuffle_epi32(RGB, 0x72)));
+				int R = _mm_extract_epi16(RGB, 0);
+				int G = _mm_extract_epi16(RGB, 2);
+				int B = _mm_extract_epi16(RGB, 4);
+				//int R = int(_mm_cvtsi128_si64(RGB) & 0x00000000ffffffff);
+				//int G = int(_mm_cvtsi128_si64(RGB) >> 32);
+				//int B = int(_mm_cvtsi128_si64(_mm_shuffle_epi32(RGB, 0x72)));
 				__m128i RG = _mm_set_epi16(0, 0, G, R, G, R, G, R);
 				__m128i B1 = _mm_set_epi16(0, 0, 0, B, 0, B, 0, B);
 				op = _mm_set_epi16(0, 0, -94, 112, -74, -38, 129, 66);
@@ -102,9 +105,9 @@ void sseYuv(char* yuv)
 				op = _mm_set_epi32(0, 128, 128, 16);
 				__m128i newyuv = _mm_srl_epi32(_mm_add_epi32(RG, B1), eight);
 				newyuv = _mm_add_epi32(newyuv, op);
-				output[cnt][index] = (char)(_mm_cvtsi128_si64(newyuv) & 0x00000000ffffffff);
-				output[cnt][uindex] = (char)(_mm_cvtsi128_si64(newyuv) >> 32);
-				output[cnt][vindex] = (char)(_mm_cvtsi128_si64(_mm_shuffle_epi32(newyuv, 0x72)));
+				output[cnt][index] = _mm_extract_epi16(newyuv, 0);
+				output[cnt][uindex] = _mm_extract_epi16(newyuv, 2);
+				output[cnt][vindex] = _mm_extract_epi16(newyuv, 4);
 	        }
 	        cnt++;
 	    }
@@ -223,7 +226,7 @@ void avxYuv(char* yuv)
 				output[cnt][index] = _mm256_extract_epi32(iyuv, 0);
 				output[cnt][uindex] = _mm256_extract_epi32(iyuv, 1);
 				output[cnt][vindex] = _mm256_extract_epi32(iyuv, 2);
-				output[cnt][index + 1] = _mm256_extract_epi32(iyuv, 3);	 
+				output[cnt][index + 1] = _mm256_extract_epi32(iyuv, 4);	 
 				
 	        }
 	        cnt++;
