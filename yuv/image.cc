@@ -275,7 +275,7 @@ int main(int argc, char** argv)
 {
 	bool do_out = false;
 	string isa;
-
+	string filename = string("dem1");
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			switch(argv[i][1])
@@ -286,17 +286,19 @@ int main(int argc, char** argv)
 				case 'o':
 					do_out = true;
 					break;
+				case 'f':
+					filename = string(argv[i + 1]);
 				default:
 					break;
 			}
 		}
 	}
 
+	string filepath = filename + string(".yuv");
+
     char* yuv;
     cnt = 0;
     int x = 0;
-    string filename = string("dem1");
-    string filepath = filename + string(".yuv");
     yuv = readImage(filepath.data());
     for (int i = 0; i < 85; i++)
     	output[i] = new char[length];
@@ -313,7 +315,7 @@ int main(int argc, char** argv)
     if (do_out) {
 		printf("doing output!\n");
 	    for (int i = 0; i < cnt; i++) {
-	    	ofstream os(string("./") + isa + filename + "/" + string("a") + to_string(i) + string(".yuv"));
+	    	ofstream os(string("./output/") + isa + filename + "/" + string("a") + to_string(i) + string(".yuv"));
 	        os.write(output[i], length);
 		}
 	}

@@ -144,7 +144,7 @@
 * 运行指令
 
   ~~~C
-  ./image -i <指令集名称> -o
+  ./image -i <指令集名称> -f <yuv文件名（默认为dem1）> -o
   ~~~
 
   指令集名称包括avx，sse，float，int，mmx
